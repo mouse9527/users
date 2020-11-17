@@ -17,7 +17,7 @@ class JwtServiceTest {
         given(mockSigner.defaultHeader()).willReturn(Header.RSA256);
         given(mockSigner.sign(any())).willReturn("mock-signature");
         JwtService jwtService = new JwtService(mockSigner);
-        Payload payload = Payload.builder()
+        Payload<String> payload = Payload.<String>builder()
                 .iat(Instant.now().getEpochSecond())
                 .exp(Instant.now().getEpochSecond())
                 .iss("mouse.com")

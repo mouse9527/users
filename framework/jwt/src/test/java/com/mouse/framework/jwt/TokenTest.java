@@ -13,16 +13,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 class TokenTest {
+    protected static final String MOCK_SIGNATURE = "mock-signature";
     private static final String EXAMPLE_COM = "example.com";
     private static final String LISA = "lisa";
     private static final String VISITOR = "visitor";
-    protected static final String MOCK_SIGNATURE = "mock-signature";
 
     @Test
     void should_be_able_to_sign_correctly() {
         Instant iat = Instant.now();
         Instant exp = iat.plus(10, DAYS);
-        Payload payload = Payload.builder()
+        Payload<String> payload = Payload.<String>builder()
                 .iat(iat.getEpochSecond())
                 .exp(exp.getEpochSecond())
                 .iss(EXAMPLE_COM)
