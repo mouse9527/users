@@ -1,3 +1,2 @@
 dependencies {
-    testImplementation("com.jayway.jsonpath:json-path:$jsonPathVersion")
 }

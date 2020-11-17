@@ -1,0 +1,10 @@
+
+apply from: "$rootDir/gradle/config/scripts/spring-boot.gradle"
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation project(':iam.domain')
+    implementation project(':framework:jwt')
+
+    testImplementation "com.jayway.jsonpath:json-path"
+}

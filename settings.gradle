@@ -5,3 +5,7 @@ file("modules").eachDir {
     include it.name
     project(":${it.name}").projectDir = it
 }
+
+file("framework").eachDir {
+    include ":framework:${it.name}"
+}

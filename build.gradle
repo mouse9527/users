@@ -14,10 +14,13 @@ allprojects {
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
     apply from: "$rootDir/gradle/config/scripts/style.gradle"
     apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
+    apply from: "$rootDir/gradle/config/scripts/spring-boot.gradle"
 
     dependencies {
         implementation "com.google.guava:guava:$guavaVersion"
-        implementation "org.apache.commons:commons-lang3:$commonsLang3Version"
+        implementation "org.apache.commons:commons-lang3"
+        implementation "org.slf4j:slf4j-api"
+
         compileOnly "org.projectlombok:lombok:$lombokVersion"
         annotationProcessor "org.projectlombok:lombok:$lombokVersion"
         testCompileOnly "org.projectlombok:lombok:$lombokVersion"

@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AllocationTokenTest {
     private @Resource TestRestTemplate testRestTemplate;
 
+
     @Test
     @Disabled
     void should_be_able_to_allocation_token() {
