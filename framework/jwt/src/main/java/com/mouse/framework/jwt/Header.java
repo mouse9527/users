@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class Header {
+    protected static final Header RSA256 = new Header("JWT", "RSA256");
     private final String alg;
     private final String typ;
 

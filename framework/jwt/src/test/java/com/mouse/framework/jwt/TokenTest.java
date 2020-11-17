@@ -3,17 +3,20 @@ package com.mouse.framework.jwt;
 import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.Test;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Base64;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 class TokenTest {
     private static final String EXAMPLE_COM = "example.com";
     private static final String LISA = "lisa";
     private static final String VISITOR = "visitor";
+    protected static final String MOCK_SIGNATURE = "mock-signature";
 
     @Test
     void should_be_able_to_sign_correctly() {
@@ -30,7 +33,8 @@ class TokenTest {
         Header header = new Header("JWT", "RSA256");
         Token token = new Token(header, payload);
 
-        Signer signer = context -> Base64.getEncoder().encodeToString(context);
+        Signer signer = mock(Signer.class);
+        given(signer.sign(any())).willReturn(MOCK_SIGNATURE);
 
         token.sign(signer);
 
@@ -48,8 +52,6 @@ class TokenTest {
         assertThat(JsonPath.compile("$.name").<String>read(jsonPayload)).isEqualTo(LISA);
         assertThat(JsonPath.compile("$.typ").<String>read(jsonPayload)).isEqualTo(VISITOR);
         assertThat(JsonPath.compile("$.ciphertext").<String>read(jsonPayload)).isEqualTo("xxxx");
-        String signText = String.format("%s.%s", Base64Util.encodeToString(Serializer.serialize(header)), Base64Util.encodeToString(Serializer.serialize(payload)));
-        String expected = Base64.getEncoder().encodeToString(Base64Util.encode(signText));
-        assertThat(split[2]).isEqualTo(expected);
+        assertThat(split[2]).isEqualTo(MOCK_SIGNATURE);
     }
 }
