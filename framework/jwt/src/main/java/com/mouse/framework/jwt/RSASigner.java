@@ -1,12 +1,14 @@
 package com.mouse.framework.jwt;
 
 import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
 
-public class RSA1024Signer implements Signer {
-
+public class RSASigner implements Signer {
     private final Signature signer;
+    private final Header defaultHeader;
 
-    public RSA1024Signer(KeyPair keyPair) {
+    public RSASigner(KeyPair keyPair) {
+        defaultHeader = new Header(String.format("RSA%s", ((RSAPrivateKey) keyPair.getPrivate()).getModulus().bitLength()));
         try {
             signer = Signature.getInstance("SHA1withRSA");
             signer.initSign(keyPair.getPrivate());
@@ -27,6 +29,6 @@ public class RSA1024Signer implements Signer {
 
     @Override
     public Header defaultHeader() {
-        return Header.RSA_1024;
+        return defaultHeader;
     }
 }

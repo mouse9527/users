@@ -1,6 +1,6 @@
 package com.mouse.framework.jwt;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -12,8 +12,8 @@ import java.util.Base64;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Slf4j
-class RSA1024SignerTest {
+@Log4j2
+class RSASignerTest {
     private static final byte[] DATA = "mock-context".getBytes(StandardCharsets.UTF_8);
     private static final String SIGNATURE = "D5DhYDWCA2winslR6Ou9oUT06XTtLkOfFPsuw+qtvGpv7wl9GEFKV5U0D8SS9lkco4KZXheaJsS3p2m28XT5ufoum3Mb0qyTCBgTJ9LdS2hCNC+sbw+CTkz31uCwV+MUD5PRwzaSw240F6VVSa8xR50ejbBtbF1EFUQMCtsSs9c=";
     private static final String PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJApDN5COZRbLRRDhYVfllx+DSiOrCpOEwAIGK01Du7U97xMt6Z7rTgNC6OI4pSi5lkqQX6J+5uPhSJrdIbPuXSWnnzne818X7JMRFl6nKix3EvaUlsLBg2I0qPeFe4kozWWIrsIlEGwboERpJfC8nGFkOclZfSImyIc7dmgCYCZAgMBAAECgYB1Mlo6yn4DBQil46rF3grgUL2jzjFbBzPdH7foAC2OrmZkl73pw7vzyG9A2MTTb4dyz66FD+oT8l6at974xiEO1SlIgm+Wqxwhyqa1hGA7kD/rkb9UJA5H9meyoNUe6jZ7ZQrzzP+UduDArR3MxFqg6oiYWOg6lCgNE1JQMyFHMQJBAM9w7TqgHIwvvmSeVEr/eF3S6Oiw6GuEfN7/iRcrZV5zNn2d3E+4UP1sFP/uSyrZ+rIKq29+wY4/Qx1xshdHEW0CQQCx5/k4jOehBdfXLMhHWzBkqgFhz5+SLhvZKMaVRe8nv7yeFrCRB4/IRl7Md2sISvKpe96h7SjgUDVfsQegqVxdAkB9wwTPqgokoz1WWvbXkRI0L42spLQDmwrpVxqRxWlrXYYHmhDa8++F9GS21I0VqZlnHzjYG4zU5F2YGDnUCu3xAkEApgFgkz0f8igCpL0b0UGs4XGlQoC7VGsD/1nGG4obRArs1NM1RM86glXvpXkU/bL5xd5Y+t3Sk6UkeLs289q03QJBAKJ/bY+pV5tNo/kXBYDP+AK3VgvjR2NO7dk0PCeHzxR/rXQJKuCfdNm3hq7Ox+ARUqQknSR7x/9/0ImoTY/1uAM=";
@@ -25,9 +25,9 @@ class RSA1024SignerTest {
         PublicKey publicKey = factory.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(PUBLIC_KEY)));
         PrivateKey privateKey = factory.generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(PRIVATE_KEY)));
 
-        Signer signer = new RSA1024Signer(new KeyPair(publicKey, privateKey));
+        Signer signer = new RSASigner(new KeyPair(publicKey, privateKey));
 
-        assertThat(signer.defaultHeader()).isEqualTo(Header.RSA_1024);
+        assertThat(signer.defaultHeader()).isEqualTo(new Header("RSA1024"));
         assertThat(signer.sign(DATA)).isEqualTo(SIGNATURE);
     }
 
