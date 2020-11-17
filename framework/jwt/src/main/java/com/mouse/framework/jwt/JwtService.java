@@ -7,9 +7,8 @@ public class JwtService {
         this.signer = signer;
     }
 
-    public Token createToken(Payload payload) {
+    public String createToken(Payload<?> payload) {
         Token token = new Token(signer.defaultHeader(), payload);
-        token.sign(signer);
-        return token;
+        return token.sign(signer);
     }
 }

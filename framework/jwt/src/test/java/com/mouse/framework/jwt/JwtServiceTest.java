@@ -26,10 +26,9 @@ class JwtServiceTest {
                 .ciphertext("xxx")
                 .build();
 
-        Token token = jwtService.createToken(payload);
+        String jwt = jwtService.createToken(payload);
 
         Token expected = new Token(Header.RSA256, payload);
-        expected.sign(mockSigner);
-        assertThat(token.toString()).isEqualTo(expected.toString());
+        assertThat(jwt).isEqualTo(expected.sign(mockSigner));
     }
 }

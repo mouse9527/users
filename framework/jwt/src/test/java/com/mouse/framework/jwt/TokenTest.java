@@ -36,9 +36,8 @@ class TokenTest {
         Signer signer = mock(Signer.class);
         given(signer.sign(any())).willReturn(MOCK_SIGNATURE);
 
-        token.sign(signer);
 
-        String jwt = token.toString();
+        String jwt = token.sign(signer);
         assertThat(jwt).isNotEmpty();
         String[] split = jwt.split("\\.");
         assertThat(split).hasSize(3);
