@@ -1,0 +1,2 @@
+apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"
+apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
