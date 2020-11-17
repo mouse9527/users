@@ -1,5 +1,6 @@
 class CoverageExtension {
-    @SuppressWarnings("unused") excludes = []
+    @SuppressWarnings("unused")
+            excludes = []
 }
 
 apply plugin: 'java'
@@ -67,7 +68,7 @@ void setJacocoTaskOptions(JacocoReportBase jacocoTask) {
 
 task testReport(type: TestReport, group: 'verification') {
     destinationDir = file("$buildDir/reports/allTests")
-    reportOn allprojects*.test
+    reportOn allprojects.each {test}
 }
 
 setJacocoTaskOptions(jacocoRootReport)

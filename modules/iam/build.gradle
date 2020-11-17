@@ -9,13 +9,14 @@ repositories {
     jcenter()
 }
 
-apply from: "$rootDir/gradle/config/scripts/junit.gradle"
+apply from: "$rootDir/gradle/config/scripts/jib.gradle"
 
 dependencies {
     implementation project(':iam.gateways')
 
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 }
 
 application {

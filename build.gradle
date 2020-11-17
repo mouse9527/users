@@ -1,2 +1,28 @@
+plugins {
+    id 'idea'
+}
 apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"
-apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
+
+
+allprojects {
+    if (subprojects.size() > 0 && name != rootProject.name) return
+    if (name == "documents" || projectDir.parentFile.name == "frontends") return
+
+    version '1.0.0'
+
+    apply from: "$rootDir/gradle/config/scripts/java.gradle"
+    apply from: "$rootDir/gradle/config/scripts/junit.gradle"
+    apply from: "$rootDir/gradle/config/scripts/style.gradle"
+//    apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
+
+    dependencies {
+        implementation "com.google.guava:guava:$guavaVersion"
+        implementation "org.apache.commons:commons-lang3:$commonsLang3Version"
+        compileOnly "org.projectlombok:lombok:$lombokVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    }
+
+    test.dependsOn(checkstyleMain)
+}
