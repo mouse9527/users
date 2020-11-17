@@ -12,10 +12,10 @@ public class Payload<T> extends HashMap<String, Object> {
         return new PayloadBuilder<>();
     }
 
-    static class PayloadBuilder<T> {
+    public static class PayloadBuilder<T> {
         private final Map<String, Object> payload;
 
-        public PayloadBuilder() {
+        PayloadBuilder() {
             this.payload = new HashMap<>();
         }
 

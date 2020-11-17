@@ -20,6 +20,7 @@ allprojects {
         implementation "com.google.guava:guava:$guavaVersion"
         implementation "org.apache.commons:commons-lang3"
         implementation "org.slf4j:slf4j-api"
+        implementation "org.slf4j:slf4j-simple"
 
         compileOnly "org.projectlombok:lombok:$lombokVersion"
         annotationProcessor "org.projectlombok:lombok:$lombokVersion"

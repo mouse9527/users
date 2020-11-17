@@ -14,7 +14,7 @@ class JwtServiceTest {
     @Test
     void should_be_able_to_create_token_correctly() {
         Signer mockSigner = mock(Signer.class);
-        given(mockSigner.defaultHeader()).willReturn(Header.RSA256);
+        given(mockSigner.defaultHeader()).willReturn(Header.RSA_256);
         given(mockSigner.sign(any())).willReturn("mock-signature");
         JwtService jwtService = new JwtService(mockSigner);
         Payload<String> payload = Payload.<String>builder()
@@ -28,7 +28,7 @@ class JwtServiceTest {
 
         String jwt = jwtService.createToken(payload);
 
-        Token expected = new Token(Header.RSA256, payload);
+        Token expected = new Token(Header.RSA_256, payload);
         assertThat(jwt).isEqualTo(expected.sign(mockSigner));
     }
 }

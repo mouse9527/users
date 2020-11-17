@@ -30,7 +30,7 @@ class TokenTest {
                 .typ(VISITOR)
                 .ciphertext("xxxx")
                 .build();
-        Header header = new Header("JWT", "RSA256");
+        Header header = new Header("RSA256");
         Token token = new Token(header, payload);
 
         Signer signer = mock(Signer.class);
