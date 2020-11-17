@@ -1,8 +1,8 @@
 plugins {
     id 'idea'
 }
+apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
 apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"
-
 
 allprojects {
     if (subprojects.size() > 0 && name != rootProject.name) return
@@ -13,7 +13,7 @@ allprojects {
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
     apply from: "$rootDir/gradle/config/scripts/style.gradle"
-//    apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
+    apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
 
     dependencies {
         implementation "com.google.guava:guava:$guavaVersion"
