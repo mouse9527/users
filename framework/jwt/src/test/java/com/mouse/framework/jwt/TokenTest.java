@@ -1,23 +1,27 @@
 package com.mouse.framework.jwt;
 
 import com.jayway.jsonpath.JsonPath;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Base64;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Log4j2
 class TokenTest {
     protected static final String MOCK_SIGNATURE = "mock-signature";
     private static final String EXAMPLE_COM = "example.com";
     private static final String LISA = "lisa";
     private static final String VISITOR = "visitor";
+    private static final String SIGN_DATA = "eyJhbGciOiJKV1QiLCJ0eXAiOiJSU0EyNTYifQ==.eyJjaXBoZXJ0ZXh0IjoieHh4eCIsImlzcyI6ImV4YW1wbGUuY29tIiwibmFtZSI6Imxpc2EiLCJ0eXAiOiJ2aXNpdG9yIiwiZXhwIjoxNjA2NTIxNjAwLCJpYXQiOjE2MDU2NTc2MDB9";
 
     @Test
     void should_be_able_to_sign_correctly() {
-        Instant iat = Instant.now();
+        Instant iat = Instant.parse("2020-11-18T00:00:00Z");
         Instant exp = iat.plus(10, DAYS);
         Payload<String> payload = Payload.<String>builder()
                 .iat(iat.getEpochSecond())
@@ -27,11 +31,12 @@ class TokenTest {
                 .typ(VISITOR)
                 .ciphertext("xxxx")
                 .build();
-        Header header = new Header("RSA256");
-        Token token = new Token(header, payload);
 
+        Token token = new Token(Header.RSA_256, payload);
+
+
+        assertThat(token.getSignData()).isEqualTo(SIGN_DATA.getBytes(StandardCharsets.UTF_8));
         String jwt = token.sign(MOCK_SIGNATURE);
-
         assertThat(jwt).isNotEmpty();
         String[] split = jwt.split("\\.");
         assertThat(split).hasSize(3);

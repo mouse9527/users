@@ -12,11 +12,14 @@ public class Token {
     }
 
     public String sign(Signer signer) {
-        byte[] data = String.format("%s.%s", header, payload).getBytes(StandardCharsets.UTF_8);
-        return String.format("%s.%s.%s", header, payload, signer.sign(data));
+        return String.format("%s.%s.%s", header, payload, signer.sign(getSignData()));
     }
 
     public String sign(String signature) {
         return String.format("%s.%s.%s", header, payload, signature);
+    }
+
+    public byte[] getSignData() {
+        return String.format("%s.%s", header, payload).getBytes(StandardCharsets.UTF_8);
     }
 }
