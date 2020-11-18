@@ -8,7 +8,7 @@ public class Base64Util {
         return Base64.getEncoder().encodeToString(bytes);
     }
 
-    static byte[] encode(String signText) {
-        return Base64.getEncoder().encode(signText.getBytes(StandardCharsets.UTF_8));
+    public static String decodeToString(String encodedText) {
+        return new String(Base64.getDecoder().decode(encodedText.getBytes(StandardCharsets.UTF_8)));
     }
 }

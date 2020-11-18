@@ -1,7 +1,5 @@
 dependencies {
     implementation "com.fasterxml.jackson.core:jackson-databind"
-
-    testImplementation "com.jayway.jsonpath:json-path"
 }
 
 jar {

@@ -25,6 +25,7 @@ allprojects {
         annotationProcessor "org.projectlombok:lombok:$lombokVersion"
         testCompileOnly "org.projectlombok:lombok:$lombokVersion"
         testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        testImplementation "com.jayway.jsonpath:json-path"
     }
 
     test.dependsOn(checkstyleMain)
