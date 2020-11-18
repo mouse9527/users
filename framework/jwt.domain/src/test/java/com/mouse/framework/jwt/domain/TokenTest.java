@@ -2,7 +2,6 @@ package com.mouse.framework.jwt.domain;
 
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -23,7 +22,6 @@ class TokenTest {
         Payload payload = new Payload(iat, exp, "xxxx");
 
         Token token = new Token(Header.RSA_256, payload);
-
 
         assertThat(new String(token.getSignData())).isEqualTo(SIGN_DATA);
         String jwt = token.sign(MOCK_SIGNATURE);
