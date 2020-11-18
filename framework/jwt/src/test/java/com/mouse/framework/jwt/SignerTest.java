@@ -45,8 +45,8 @@ class SignerTest {
     }
 
     private String createExpected(Payload<String> payload) throws SignatureException {
-        String encodeHeader = Base64Util.encodeToString(JSONUtil.serialize(new Header("RSA1024")));
-        String encodePayload = Base64Util.encodeToString(JSONUtil.serialize(payload));
+        String encodeHeader = Base64Util.encodeToString(JsonUtil.formatToBytes(new Header("RSA1024")));
+        String encodePayload = Base64Util.encodeToString(JsonUtil.formatToBytes(payload));
         instance.update(String.format("%s.%s", encodeHeader, encodePayload).getBytes(StandardCharsets.UTF_8));
         return Base64Util.encodeToString(instance.sign());
     }

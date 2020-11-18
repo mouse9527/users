@@ -7,8 +7,8 @@ public class Token {
     private final String payload;
 
     public Token(Header header, Payload<?> payload) {
-        this.header = Base64Util.encodeToString(JSONUtil.serialize(header));
-        this.payload = Base64Util.encodeToString(JSONUtil.serialize(payload));
+        this.header = Base64Util.encodeToString(JsonUtil.formatToBytes(header));
+        this.payload = Base64Util.encodeToString(JsonUtil.formatToBytes(payload));
     }
 
     public String sign(Signer signer) {
