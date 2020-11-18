@@ -1,5 +1,6 @@
 package com.mouse.framework.jwt;
 
+@Deprecated
 public class JwtService {
     private final Signer signer;
 

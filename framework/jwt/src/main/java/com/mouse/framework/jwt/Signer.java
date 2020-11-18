@@ -4,4 +4,6 @@ public interface Signer {
     String sign(byte[] context);
 
     Header defaultHeader();
+
+    String sign(Payload<?> payload);
 }

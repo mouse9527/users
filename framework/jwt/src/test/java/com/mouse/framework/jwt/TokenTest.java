@@ -34,7 +34,7 @@ class TokenTest {
         Token token = new Token(header, payload);
 
         Signer signer = mock(Signer.class);
-        given(signer.sign(any())).willReturn(MOCK_SIGNATURE);
+        given(signer.sign(any(byte[].class))).willReturn(MOCK_SIGNATURE);
 
 
         String jwt = token.sign(signer);

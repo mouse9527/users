@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Serializer {
+public class JSONUtil {
     private static final ObjectMapper OBJECT_MAPPER;
-    private static final Logger LOGGER = LogManager.getLogger(Serializer.class);
+    private static final Logger LOGGER = LogManager.getLogger(JSONUtil.class);
 
     static {
         OBJECT_MAPPER = new ObjectMapper();
