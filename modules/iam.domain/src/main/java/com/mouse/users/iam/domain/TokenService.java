@@ -13,7 +13,7 @@ public class TokenService {
     }
 
     public String allocate() {
-        Payload<String> payload = Payload.<String>builder()
+        Payload payload = Payload.<String>builder()
                 .iat(Instant.now())
                 .build();
         return tokenSigner.sign(payload);

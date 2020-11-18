@@ -23,7 +23,7 @@ class TokenTest {
     void should_be_able_to_sign_correctly() {
         Instant iat = Instant.parse("2020-11-18T00:00:00Z");
         Instant exp = iat.plus(10, DAYS);
-        Payload<String> payload = Payload.<String>builder()
+        Payload payload = Payload.<String>builder()
                 .iat(iat)
                 .exp(exp)
                 .ciphertext("xxxx")

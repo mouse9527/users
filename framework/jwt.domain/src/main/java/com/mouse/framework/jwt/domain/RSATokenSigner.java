@@ -20,7 +20,7 @@ public class RSATokenSigner implements TokenSigner {
     }
 
     @Override
-    public String sign(Payload<?> payload) {
+    public String sign(Payload payload) {
         Token token = new Token(defaultHeader, payload);
         return token.sign(sign(token.getSignData()));
     }

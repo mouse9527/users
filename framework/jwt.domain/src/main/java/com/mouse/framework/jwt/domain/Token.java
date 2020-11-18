@@ -10,7 +10,7 @@ public class Token {
     private final String header;
     private final String payload;
 
-    public Token(Header header, Payload<?> payload) {
+    public Token(Header header, Payload payload) {
         this.header = Base64Util.encodeToString(JsonUtil.formatToBytes(header));
         this.payload = Base64Util.encodeToString(JsonUtil.formatToBytes(payload));
     }

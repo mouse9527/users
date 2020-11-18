@@ -1,13 +1,25 @@
 package com.mouse.framework.jwt.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-public class Payload<T> extends HashMap<String, Object> {
+public class Payload extends HashMap<String, Object> {
 
-    public Payload(Instant iat, Instant exp, T ciphertext) {
+    public Payload(Instant iat, Instant exp, String ciphertext) {
         super();
+        if (Objects.isNull(iat)) {
+            throw new IllegalArgumentException("Illegal argument [iat]");
+        }
+        if (Objects.isNull(exp) || exp.isBefore(iat)) {
+            throw new IllegalArgumentException("Illegal argument [exp]");
+        }
+        if (StringUtils.isEmpty(ciphertext)) {
+            throw new IllegalArgumentException("Illegal argument [ciphertext]");
+        }
         put("iat", iat.getEpochSecond());
         put("exp", exp.getEpochSecond());
         put("ciphertext", ciphertext);
@@ -55,8 +67,8 @@ public class Payload<T> extends HashMap<String, Object> {
             return this;
         }
 
-        public Payload<T> build() {
-            return new Payload<>(payload);
+        public Payload build() {
+            return new Payload(payload);
         }
     }
 }
