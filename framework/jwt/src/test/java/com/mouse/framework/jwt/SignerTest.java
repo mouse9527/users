@@ -29,8 +29,8 @@ class SignerTest {
     @Test
     void should_be_able_to_sign_payload() throws SignatureException {
         Payload<String> payload = Payload.<String>builder()
-                .iat(Instant.now().getEpochSecond())
-                .exp(Instant.now().getEpochSecond())
+                .iat(Instant.now())
+                .exp(Instant.now())
                 .iss("mouse.com")
                 .name("admin")
                 .typ("logged")

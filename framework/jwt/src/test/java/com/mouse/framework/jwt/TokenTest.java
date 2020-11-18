@@ -24,8 +24,8 @@ class TokenTest {
         Instant iat = Instant.parse("2020-11-18T00:00:00Z");
         Instant exp = iat.plus(10, DAYS);
         Payload<String> payload = Payload.<String>builder()
-                .iat(iat.getEpochSecond())
-                .exp(exp.getEpochSecond())
+                .iat(iat)
+                .exp(exp)
                 .iss(EXAMPLE_COM)
                 .name(LISA)
                 .typ(VISITOR)

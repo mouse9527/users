@@ -1,5 +1,6 @@
 package com.mouse.framework.jwt;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,13 +20,13 @@ public class Payload<T> extends HashMap<String, Object> {
             this.payload = new HashMap<>();
         }
 
-        public PayloadBuilder<T> iat(Long iat) {
-            payload.put("iat", iat);
+        public PayloadBuilder<T> iat(Instant iat) {
+            payload.put("iat", iat.getEpochSecond());
             return this;
         }
 
-        public PayloadBuilder<T> exp(Long exp) {
-            payload.put("exp", exp);
+        public PayloadBuilder<T> exp(Instant exp) {
+            payload.put("exp", exp.getEpochSecond());
             return this;
         }
 
