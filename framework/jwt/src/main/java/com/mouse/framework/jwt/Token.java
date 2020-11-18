@@ -11,10 +11,6 @@ public class Token {
         this.payload = Base64Util.encodeToString(JsonUtil.formatToBytes(payload));
     }
 
-    public String sign(Signer signer) {
-        return String.format("%s.%s.%s", header, payload, signer.sign(getSignData()));
-    }
-
     public String sign(String signature) {
         return String.format("%s.%s.%s", header, payload, signature);
     }
