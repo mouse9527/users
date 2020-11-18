@@ -3,11 +3,11 @@ package com.mouse.framework.jwt;
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 
-public class RSASigner implements Signer {
+public class RSATokenSigner implements TokenSigner {
     private final Signature signer;
     private final Header defaultHeader;
 
-    public RSASigner(PrivateKey privateKey) {
+    public RSATokenSigner(PrivateKey privateKey) {
         defaultHeader = new Header(String.format("RSA%s", ((RSAPrivateKey) privateKey).getModulus().bitLength()));
         try {
             signer = Signature.getInstance("SHA1withRSA");

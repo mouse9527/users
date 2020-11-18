@@ -1,6 +1,6 @@
 package com.mouse.users.iam.domain;
 
-import com.mouse.framework.jwt.RSASigner;
+import com.mouse.framework.jwt.RSATokenSigner;
 import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;
@@ -14,6 +14,6 @@ public class TokenServiceTest {
         generator.initialize(1024);
         KeyPair keyPair = generator.generateKeyPair();
 
-        RSASigner rsaSigner = new RSASigner(keyPair.getPrivate());
+        RSATokenSigner rsaSigner = new RSATokenSigner(keyPair.getPrivate());
     }
 }

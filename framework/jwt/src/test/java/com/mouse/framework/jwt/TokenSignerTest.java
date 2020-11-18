@@ -11,8 +11,8 @@ import java.time.Instant;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Log4j2
-class SignerTest {
-    private Signer signer;
+class TokenSignerTest {
+    private TokenSigner tokenSigner;
     private Signature instance;
 
     @BeforeEach
@@ -23,7 +23,7 @@ class SignerTest {
         instance = Signature.getInstance("SHA1withRSA");
         instance.initSign(keyPair.getPrivate());
 
-        signer = new RSASigner(keyPair.getPrivate());
+        tokenSigner = new RSATokenSigner(keyPair.getPrivate());
     }
 
     @Test
@@ -37,7 +37,7 @@ class SignerTest {
                 .ciphertext("xxx")
                 .build();
 
-        String jwt = signer.sign(payload);
+        String jwt = tokenSigner.sign(payload);
 
         String expected = createExpected(payload);
 

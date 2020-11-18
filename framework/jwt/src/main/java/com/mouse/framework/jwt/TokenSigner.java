@@ -1,5 +1,5 @@
 package com.mouse.framework.jwt;
 
-public interface Signer {
+public interface TokenSigner {
     String sign(Payload<?> payload);
 }
