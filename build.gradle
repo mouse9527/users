@@ -1,15 +1,14 @@
-plugins {
-    id 'idea'
-}
 apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
 apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"
 
 allprojects {
+    apply plugin:  'idea'
     if (subprojects.size() > 0 && name != rootProject.name) return
     if (name == "documents" || projectDir.parentFile.name == "frontends") return
 
     version '1.0.0'
 
+    apply plugin: 'java-library'
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
     apply from: "$rootDir/gradle/config/scripts/style.gradle"
