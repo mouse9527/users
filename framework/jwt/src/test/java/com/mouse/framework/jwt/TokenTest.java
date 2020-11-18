@@ -8,9 +8,6 @@ import java.util.Base64;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
 
 class TokenTest {
     protected static final String MOCK_SIGNATURE = "mock-signature";
@@ -33,11 +30,8 @@ class TokenTest {
         Header header = new Header("RSA256");
         Token token = new Token(header, payload);
 
-        Signer signer = mock(Signer.class);
-        given(signer.sign(any(byte[].class))).willReturn(MOCK_SIGNATURE);
+        String jwt = token.sign(MOCK_SIGNATURE);
 
-
-        String jwt = token.sign(signer);
         assertThat(jwt).isNotEmpty();
         String[] split = jwt.split("\\.");
         assertThat(split).hasSize(3);

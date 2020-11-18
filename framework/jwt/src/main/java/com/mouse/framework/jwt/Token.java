@@ -15,4 +15,8 @@ public class Token {
         byte[] data = String.format("%s.%s", header, payload).getBytes(StandardCharsets.UTF_8);
         return String.format("%s.%s.%s", header, payload, signer.sign(data));
     }
+
+    public String sign(String signature) {
+        return String.format("%s.%s.%s", header, payload, signature);
+    }
 }

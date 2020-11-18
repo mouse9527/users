@@ -28,11 +28,6 @@ public class RSASigner implements Signer {
     }
 
     @Override
-    public Header defaultHeader() {
-        return defaultHeader;
-    }
-
-    @Override
     public String sign(Payload<?> payload) {
         Token token = new Token(defaultHeader, payload);
         return token.sign(this);
