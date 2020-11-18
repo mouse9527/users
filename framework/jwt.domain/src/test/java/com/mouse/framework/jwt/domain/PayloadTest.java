@@ -12,14 +12,10 @@ class PayloadTest {
     void should_be_able_to_build_correctly() {
         Instant iat = Instant.parse("2020-11-18T00:00:00Z");
         Instant exp = Instant.parse("2020-11-18T00:00:00Z");
-        Payload<String> build = Payload.<String>builder()
-                .iat(iat)
-                .exp(exp)
-                .ciphertext("xxxx")
-                .build();
+        Payload<String> payload = new Payload<>(iat, exp, "xxxx");
 
-        assertThat(build.getIat()).isEqualTo(iat);
-        assertThat(build.getExp()).isEqualTo(exp);
-        assertThat(build.getCiphertext()).isEqualTo("xxxx");
+        assertThat(payload.getIat()).isEqualTo(iat);
+        assertThat(payload.getExp()).isEqualTo(exp);
+        assertThat(payload.getCiphertext()).isEqualTo("xxxx");
     }
 }

@@ -5,6 +5,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Payload<T> extends HashMap<String, Object> {
+
+    public Payload(Instant iat, Instant exp, T ciphertext) {
+        super();
+        put("iat", iat.getEpochSecond());
+        put("exp", exp.getEpochSecond());
+        put("ciphertext", ciphertext);
+    }
+
     public Payload(Map<String, Object> payload) {
         this.putAll(payload);
     }
