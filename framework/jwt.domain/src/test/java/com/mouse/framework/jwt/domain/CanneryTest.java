@@ -1,4 +1,4 @@
-package com.mouse.framework.common.domain;
+package com.mouse.framework.jwt.domain;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,6 @@
-package com.mouse.framework.common.domain;
+package com.mouse.framework.jwt.domain;
 
-import com.mouse.framework.users.core.Header;
-import com.mouse.framework.users.core.Payload;
-import com.mouse.framework.users.core.Token;
+import com.mouse.framework.common.domain.Base64Util;
 
 import java.security.*;
 import java.security.interfaces.RSAPrivateKey;

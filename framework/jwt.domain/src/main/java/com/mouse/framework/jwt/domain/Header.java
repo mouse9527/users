@@ -1,4 +1,4 @@
-package com.mouse.framework.users.core;
+package com.mouse.framework.jwt.domain;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

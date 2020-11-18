@@ -1,11 +1,10 @@
-package com.mouse.framework.users.core;
+package com.mouse.framework.jwt.domain;
 
 import com.jayway.jsonpath.JsonPath;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Base64;
 

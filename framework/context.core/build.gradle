@@ -1,5 +1,5 @@
 dependencies {
-    api project(":users.core")
+    api project(":jwt.domain")
 }
 
 jar {
