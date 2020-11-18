@@ -1,9 +1,9 @@
 package com.mouse.users.iam.domain;
 
 import com.jayway.jsonpath.JsonPath;
-import com.mouse.framework.jwt.Base64Util;
-import com.mouse.framework.jwt.RSATokenSigner;
-import com.mouse.framework.jwt.TokenSigner;
+import com.mouse.framework.common.domain.Base64Util;
+import com.mouse.framework.common.domain.RSATokenSigner;
+import com.mouse.framework.common.domain.TokenSigner;
 import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;

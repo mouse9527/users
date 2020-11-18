@@ -1,7 +1,7 @@
 package com.mouse.users.iam.domain;
 
-import com.mouse.framework.jwt.Payload;
-import com.mouse.framework.jwt.TokenSigner;
+import com.mouse.framework.common.domain.TokenSigner;
+import com.mouse.framework.users.core.Payload;
 
 import java.time.Instant;
 

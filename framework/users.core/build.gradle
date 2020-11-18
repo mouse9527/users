@@ -1,0 +1,7 @@
+dependencies {
+    api project(":common.domain")
+}
+
+jar {
+    enabled = true
+}

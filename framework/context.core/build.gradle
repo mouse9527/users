@@ -1,0 +1,7 @@
+dependencies {
+    api project(":users.core")
+}
+
+jar {
+    enabled = true
+}
