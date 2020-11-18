@@ -18,6 +18,11 @@ public class RSASigner implements Signer {
     }
 
     @Override
+    public String sign(Payload<?> payload) {
+        Token token = new Token(defaultHeader, payload);
+        return token.sign(sign(token.getSignData()));
+    }
+
     public String sign(byte[] context) {
         try {
             signer.update(context);
@@ -25,11 +30,5 @@ public class RSASigner implements Signer {
         } catch (SignatureException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public String sign(Payload<?> payload) {
-        Token token = new Token(defaultHeader, payload);
-        return token.sign(sign(token.getSignData()));
     }
 }
