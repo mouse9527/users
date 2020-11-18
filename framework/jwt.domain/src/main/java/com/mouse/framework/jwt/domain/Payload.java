@@ -13,6 +13,18 @@ public class Payload<T> extends HashMap<String, Object> {
         return new PayloadBuilder<>();
     }
 
+    public Instant getIat() {
+        return Instant.ofEpochSecond((Long) get("iat"));
+    }
+
+    public Instant getExp() {
+        return Instant.ofEpochSecond((Long) get("exp"));
+    }
+
+    public String getCiphertext() {
+        return (String) get("ciphertext");
+    }
+
     public static class PayloadBuilder<T> {
         private final Map<String, Object> payload;
 
@@ -27,21 +39,6 @@ public class Payload<T> extends HashMap<String, Object> {
 
         public PayloadBuilder<T> exp(Instant exp) {
             payload.put("exp", exp.getEpochSecond());
-            return this;
-        }
-
-        public PayloadBuilder<T> iss(String iss) {
-            payload.put("iss", iss);
-            return this;
-        }
-
-        public PayloadBuilder<T> name(String name) {
-            payload.put("name", name);
-            return this;
-        }
-
-        public PayloadBuilder<T> typ(String typ) {
-            payload.put("typ", typ);
             return this;
         }
 

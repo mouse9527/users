@@ -26,7 +26,6 @@ class TokenTest {
         Payload<String> payload = Payload.<String>builder()
                 .iat(iat)
                 .exp(exp)
-                .iss(EXAMPLE_COM)
                 .ciphertext("xxxx")
                 .build();
 

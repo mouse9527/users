@@ -28,6 +28,5 @@ public class TokenServiceTest {
         assertThat(split).hasSize(3);
         assertThat(JsonPath.compile("$.typ").<String>read(Base64Util.decodeToString(split[0]))).isEqualTo("RSA1024");
         assertThat(JsonPath.compile("$.alg").<String>read(Base64Util.decodeToString(split[0]))).isEqualTo("JWT");
-        assertThat(JsonPath.compile("$.typ").<String>read(Base64Util.decodeToString(split[1]))).isEqualTo("visitor");
     }
 }
