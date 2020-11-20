@@ -29,4 +29,11 @@ public class VerifierTest {
         assertThat(verifier.verify(signature, "aaa")).isTrue();
         assertThat(verifier.verify(signature, "aa")).isFalse();
     }
+
+    @Test
+    void should_be_able_to_decrypt_encrypted_date() {
+        String encrypted = signer.encrypt("aaa");
+
+        assertThat(verifier.decrypt(encrypted)).isEqualTo("aaa");
+    }
 }
