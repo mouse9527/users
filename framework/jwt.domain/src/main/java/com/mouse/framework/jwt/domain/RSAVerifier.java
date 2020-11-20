@@ -10,13 +10,13 @@ import java.nio.charset.StandardCharsets;
 import java.security.*;
 
 public class RSAVerifier implements Verifier {
-    private final Signature signature;
+    private final Signature verifier;
     private final Cipher cipher;
 
     public RSAVerifier(PublicKey publicKey) {
         try {
-            signature = Signature.getInstance("SHA1WithRSA");
-            signature.initVerify(publicKey);
+            verifier = Signature.getInstance("SHA1WithRSA");
+            verifier.initVerify(publicKey);
             cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, publicKey);
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException e) {
@@ -26,11 +26,14 @@ public class RSAVerifier implements Verifier {
 
     @Override
     public boolean verify(String signature, String data) {
-        try {
-            this.signature.update(data.getBytes(StandardCharsets.UTF_8));
-            return this.signature.verify(Base64Util.decode(signature));
-        } catch (SignatureException e) {
-            return false;
+        byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
+        synchronized (verifier) {
+            try {
+                verifier.update(bytes);
+                return verifier.verify(Base64Util.decode(signature));
+            } catch (SignatureException e) {
+                return false;
+            }
         }
     }
 

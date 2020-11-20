@@ -29,14 +29,18 @@ public class RSASigner implements Signer {
 
     @Override
     public String sign(String data) {
+        return Base64Util.encodeToString(sign(data.getBytes(CHARSET)));
+    }
+
+    private synchronized byte[] sign(byte[] data) {
         byte[] bytes;
         try {
-            signer.update(data.getBytes(CHARSET));
+            signer.update(data);
             bytes = signer.sign();
         } catch (SignatureException e) {
             throw new RuntimeException(e);
         }
-        return Base64Util.encodeToString(bytes);
+        return bytes;
     }
 
     @Override
