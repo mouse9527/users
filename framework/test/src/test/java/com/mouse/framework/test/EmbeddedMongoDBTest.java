@@ -1,8 +1,8 @@
 package com.mouse.framework.test;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -14,10 +14,10 @@ class EmbeddedMongoDBTest {
     void should_be_able_to_create_mongo_replica_set() {
         EmbeddedMongoDB embeddedMongoDB = EmbeddedMongoDB.getInstance();
 
-        String replicaSetUrl = embeddedMongoDB.getReplicaSetUrl();
-
-        assertThat(replicaSetUrl).isNotEmpty();
-        MongoTemplate mongoTemplate = new MongoTemplate(new SimpleMongoClientDatabaseFactory(replicaSetUrl));
+        MongoDatabaseFactory mongoDatabaseFactory = embeddedMongoDB.getMongoDatabaseFactory();
+        assertThat(embeddedMongoDB.getReplicaSetUrl()).isNotEmpty();
+        assertThat(mongoDatabaseFactory).isNotNull();
+        MongoTemplate mongoTemplate = new MongoTemplate(mongoDatabaseFactory);
 
         TestEntity entity = new TestEntity();
         entity.id = "test-id";

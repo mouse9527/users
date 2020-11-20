@@ -1,7 +1,14 @@
 package com.mouse.framework.test;
 
 import com.github.silaev.mongodb.replicaset.MongoDbReplicaSet;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 
+/**
+ * Open a replica set mongodb in docker
+ *
+ * <b>Must call {@link EmbeddedMongoDB#stop()} when the end of use</b>
+ */
 public final class EmbeddedMongoDB {
     private static final Object LOCK = new Object();
     private static EmbeddedMongoDB instance;
@@ -33,5 +40,9 @@ public final class EmbeddedMongoDB {
 
     public String getReplicaSetUrl() {
         return mongoDbReplicaSet.getReplicaSetUrl();
+    }
+
+    public MongoDatabaseFactory getMongoDatabaseFactory() {
+        return new SimpleMongoClientDatabaseFactory(getReplicaSetUrl());
     }
 }
