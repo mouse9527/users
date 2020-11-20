@@ -26,31 +26,29 @@ public class RSAVerifier implements Verifier {
 
     @Override
     public boolean verify(String signature, String data) {
-        byte[] bytes = data.getBytes(StandardCharsets.UTF_8);
-        synchronized (verifier) {
-            try {
-                verifier.update(bytes);
-                return verifier.verify(Base64Util.decode(signature));
-            } catch (SignatureException e) {
-                return false;
-            }
+        return verify(Base64Util.decode(signature), data.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private synchronized boolean verify(byte[] signature, byte[] data) {
+        try {
+            verifier.update(data);
+            return verifier.verify(signature);
+        } catch (SignatureException e) {
+            return false;
         }
     }
 
     @Override
     public String decrypt(String encrypted) {
         byte[] bytes = Base64Util.decode(encrypted);
-        byte[] decrypted = decrypt(bytes);
-        return new String(decrypted);
+        return new String(decrypt(bytes));
     }
 
     private synchronized byte[] decrypt(byte[] bytes) {
-        byte[] decrypted;
         try {
-            decrypted = cipher.doFinal(bytes);
+            return cipher.doFinal(bytes);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new RuntimeException(e);
         }
-        return decrypted;
     }
 }

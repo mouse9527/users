@@ -49,21 +49,10 @@ public class RSASigner implements Signer {
     }
 
     private synchronized byte[] encrypt(byte[] bytes1) {
-        byte[] bytes;
         try {
-            bytes = cipher.doFinal(bytes1);
+            return cipher.doFinal(bytes1);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new RuntimeException(e);
         }
-        return bytes;
-
-
-
-
-
-
-
     }
-
-
 }
