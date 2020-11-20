@@ -9,8 +9,9 @@ import java.security.NoSuchAlgorithmException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SignerTest {
+public class VerifierTest {
     private Signer signer;
+    private Verifier verifier;
 
     @BeforeEach
     void setUp() throws NoSuchAlgorithmException {
@@ -18,21 +19,14 @@ class SignerTest {
         generator.initialize(1024);
         KeyPair keyPair = generator.generateKeyPair();
         this.signer = new RSASigner(keyPair.getPrivate());
+        this.verifier = new RSAVerifier(keyPair.getPublic());
     }
 
     @Test
-    void should_be_able_to_sign_date() {
+    void should_be_able_to_verify_signature() {
         String signature = signer.sign("aaa");
 
-        assertThat(signature).isNotEmpty();
-        assertThat(signature).isNotEqualTo("aaa");
-    }
-
-    @Test
-    void should_be_able_to_encrypt_data() {
-        String encrypted = signer.encrypt("aaa");
-
-        assertThat(encrypted).isNotEmpty();
-        assertThat(encrypted).isNotEqualTo("aaa");
+        assertThat(verifier.verify(signature, "aaa")).isTrue();
+        assertThat(verifier.verify(signature, "aa")).isFalse();
     }
 }

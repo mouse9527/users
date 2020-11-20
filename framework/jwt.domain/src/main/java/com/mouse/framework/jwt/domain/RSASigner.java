@@ -6,15 +6,17 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 
-public class RsaSigner implements Signer {
+public class RSASigner implements Signer {
 
+    private static final Charset CHARSET = StandardCharsets.UTF_8;
     private final Signature signer;
     private final Cipher cipher;
 
-    public RsaSigner(PrivateKey privateKey) {
+    public RSASigner(PrivateKey privateKey) {
         try {
             signer = Signature.getInstance("SHA1WithRSA");
             signer.initSign(privateKey);
@@ -29,7 +31,7 @@ public class RsaSigner implements Signer {
     public String sign(String data) {
         byte[] bytes;
         try {
-            signer.update(data.getBytes(StandardCharsets.UTF_8));
+            signer.update(data.getBytes(CHARSET));
             bytes = signer.sign();
         } catch (SignatureException e) {
             throw new RuntimeException(e);
@@ -41,7 +43,7 @@ public class RsaSigner implements Signer {
     public String encrypt(String data) {
         byte[] bytes;
         try {
-            bytes = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
+            bytes = cipher.doFinal(data.getBytes(CHARSET));
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new RuntimeException(e);
         }

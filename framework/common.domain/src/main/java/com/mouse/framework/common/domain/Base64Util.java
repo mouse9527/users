@@ -11,4 +11,8 @@ public class Base64Util {
     public static String decodeToString(String encodedText) {
         return new String(Base64.getDecoder().decode(encodedText.getBytes(StandardCharsets.UTF_8)));
     }
+
+    public static byte[] decode(String signature) {
+        return Base64.getDecoder().decode(signature);
+    }
 }
