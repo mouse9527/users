@@ -15,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MultipleThreadsSignAndVerifyTest {
+class MultipleThreadsSignerAndVerifierTest {
     private static final int COUNT = 10;
     private Signer signer;
     private Verifier verifier;
@@ -30,7 +30,7 @@ class MultipleThreadsSignAndVerifyTest {
     }
 
     @Test
-    void should_be_able_to_sign_in_multiple_threads() throws InterruptedException {
+    void should_be_able_to_signing_and_verify_in_multiple_threads() throws InterruptedException {
         Map<String, String> signatures = new ConcurrentHashMap<>();
         CountDownLatch signingCountDown = new CountDownLatch(COUNT);
 
@@ -57,5 +57,35 @@ class MultipleThreadsSignAndVerifyTest {
 
         assertThat(verifies).hasSize(COUNT);
         assertThat(verifies).allMatch(Boolean::booleanValue);
+    }
+
+    @Test
+    void should_be_able_to_encrypt_and_decrypt_in_multiple_threads() throws InterruptedException {
+        Map<String, String> encryptData = new ConcurrentHashMap<>();
+        CountDownLatch encryptCountDown = new CountDownLatch(COUNT);
+
+        for (int i = 0; i < COUNT; i++) {
+            final String data = String.valueOf(i);
+            new Thread(() -> {
+                String encrypted = signer.encrypt(data);
+                encryptData.put(data, encrypted);
+                encryptCountDown.countDown();
+            }).start();
+        }
+        encryptCountDown.await();
+
+        CountDownLatch decryptCountDown = new CountDownLatch(COUNT);
+        Map<String, String> decryptedData = new ConcurrentHashMap<>();
+        encryptData.forEach((data, encrypted) -> {
+            new Thread(() -> {
+                String decrypted = verifier.decrypt(encrypted);
+                decryptedData.put(data, decrypted);
+                decryptCountDown.countDown();
+            }).start();
+        });
+        decryptCountDown.await();
+
+        assertThat(decryptedData).hasSize(COUNT);
+        assertThat(decryptedData.entrySet()).allMatch(entry -> entry.getKey().equals(entry.getValue()));
     }
 }

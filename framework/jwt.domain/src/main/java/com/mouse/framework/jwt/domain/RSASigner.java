@@ -45,12 +45,25 @@ public class RSASigner implements Signer {
 
     @Override
     public String encrypt(String data) {
+        return Base64Util.encodeToString(encrypt(data.getBytes(CHARSET)));
+    }
+
+    private synchronized byte[] encrypt(byte[] bytes1) {
         byte[] bytes;
         try {
-            bytes = cipher.doFinal(data.getBytes(CHARSET));
+            bytes = cipher.doFinal(bytes1);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new RuntimeException(e);
         }
-        return Base64Util.encodeToString(bytes);
+        return bytes;
+
+
+
+
+
+
+
     }
+
+
 }

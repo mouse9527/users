@@ -40,12 +40,17 @@ public class RSAVerifier implements Verifier {
     @Override
     public String decrypt(String encrypted) {
         byte[] bytes = Base64Util.decode(encrypted);
+        byte[] decrypted = decrypt(bytes);
+        return new String(decrypted);
+    }
+
+    private synchronized byte[] decrypt(byte[] bytes) {
         byte[] decrypted;
         try {
             decrypted = cipher.doFinal(bytes);
         } catch (IllegalBlockSizeException | BadPaddingException e) {
             throw new RuntimeException(e);
         }
-        return new String(decrypted);
+        return decrypted;
     }
 }
