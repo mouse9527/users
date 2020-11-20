@@ -9,12 +9,14 @@ import javax.crypto.NoSuchPaddingException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.security.interfaces.RSAPrivateKey;
 
 public class RSASigner implements Signer {
 
     private static final Charset CHARSET = StandardCharsets.UTF_8;
     private final Signature signer;
     private final Cipher cipher;
+    private final Integer length;
 
     public RSASigner(PrivateKey privateKey) {
         try {
@@ -22,6 +24,7 @@ public class RSASigner implements Signer {
             signer.initSign(privateKey);
             cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+            length = ((RSAPrivateKey) privateKey).getModulus().bitLength();
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException e) {
             throw new RuntimeException(e);
         }
@@ -46,6 +49,11 @@ public class RSASigner implements Signer {
     @Override
     public String encrypt(String data) {
         return Base64Util.encodeToString(encrypt(data.getBytes(CHARSET)));
+    }
+
+    @Override
+    public Header defaultHeader() {
+        return new Header(String.format("RSA%s", length));
     }
 
     private synchronized byte[] encrypt(byte[] bytes1) {

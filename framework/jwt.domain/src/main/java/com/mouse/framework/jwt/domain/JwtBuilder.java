@@ -1,41 +1,75 @@
 package com.mouse.framework.jwt.domain;
 
-import java.time.Instant;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mouse.framework.common.domain.Base64Util;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JwtBuilder<T> {
+    private final Map<String, Object> payload;
+    private final ObjectMapper mapper;
+
     public JwtBuilder() {
+        payload = new HashMap<>();
+        mapper = new ObjectMapper();
     }
 
-    public JwtBuilder<T> iat(Instant iat) {
-        return null;
+    public JwtBuilder<T> iat(Long iat) {
+        payload.put("iat", iat);
+        return this;
     }
 
-    public JwtBuilder<T> exp(Instant exp) {
-        return null;
+    public JwtBuilder<T> exp(Long exp) {
+        payload.put("exp", exp);
+        return this;
     }
 
     public JwtBuilder<T> jti(String jti) {
-        return null;
+        payload.put("jti", jti);
+        return this;
     }
 
     public JwtBuilder<T> authorities(List<String> authorities) {
-        return null;
+        payload.put("authorities", authorities);
+        return this;
     }
 
-    public JwtBuilder<T> scope(List<String> scopes) {
-        return null;
+    public JwtBuilder<T> scopes(List<String> scopes) {
+        payload.put("scopes", scopes);
+        return this;
     }
 
     public JwtBuilder<T> username(String username) {
-        return null;
+        payload.put("username", username);
+        return this;
     }
 
     public JwtBuilder<T> protectedData(T protectedData) {
-        return null;
+        payload.put("protectedData", protectedData);
+        return this;
     }
 
     public String sign(Signer signer) {
-        return null;
+        payload.replace("protectedData", signer.encrypt(payload.get("protectedData").toString()));
+        Header header = signer.defaultHeader();
+        StringBuilder builder = new StringBuilder();
+        builder.append(Base64Util.encodeToString(format(header))).append(".");
+        builder.append(Base64Util.encodeToString(format(payload)));
+
+        String signatureData = builder.toString();
+
+        builder.append(".").append(signer.sign(signatureData));
+        return builder.toString();
+    }
+
+    private byte[] format(Object data) {
+        try {
+            return mapper.writeValueAsBytes(data);
+        } catch (JsonProcessingException e) {
+            return new byte[0];
+        }
     }
 }
