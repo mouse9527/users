@@ -8,9 +8,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.Resource;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,11 +21,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AllocationTokenTest {
     private @Resource TestRestTemplate testRestTemplate;
 
-
     @Test
     @Disabled
     void should_be_able_to_allocation_token() {
-        RequestEntity<?> entity = new RequestEntity<>(HttpMethod.POST, URI.create("/auth/tokens"));
+        Map<String, String> body = new HashMap<>();
+        body.put("username", "admin");
+        body.put("password", "xxx");
+        RequestEntity<?> entity = new RequestEntity<>(body, HttpMethod.POST, URI.create("/auth/tokens"));
         ResponseEntity<String> responseEntity = testRestTemplate.exchange(entity, String.class);
 
         JsonResponse response = new JsonResponse(responseEntity);
