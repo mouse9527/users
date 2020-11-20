@@ -22,7 +22,7 @@ public class AllocationTokenTest {
     @Test
     @Disabled
     void should_be_able_to_allocation_token() {
-        RequestEntity<?> entity = new RequestEntity<>(HttpMethod.POST, URI.create("/tokens"));
+        RequestEntity<?> entity = new RequestEntity<>(HttpMethod.POST, URI.create("/auth/tokens"));
         ResponseEntity<String> responseEntity = testRestTemplate.exchange(entity, String.class);
 
         JsonResponse response = new JsonResponse(responseEntity);
