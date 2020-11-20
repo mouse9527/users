@@ -28,6 +28,10 @@ allprojects {
         testImplementation "com.jayway.jsonpath:json-path"
     }
 
+    jar {
+        enabled = true
+    }
+
     test.dependsOn(checkstyleMain)
 
     configurations {

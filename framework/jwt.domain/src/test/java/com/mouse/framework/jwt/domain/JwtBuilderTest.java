@@ -32,7 +32,7 @@ public class JwtBuilderTest {
                 .jti(MOCK_JTI)
                 .authorities(Collections.singletonList("admin"))
                 .scopes(Collections.singletonList("all"))
-                .username("lisa su")
+                .name("lisa su")
                 .protectedData("xxx")
                 .sign(signer);
 
@@ -47,7 +47,7 @@ public class JwtBuilderTest {
         assertThat(JsonPath.compile("$.jti").<String>read(payload)).isEqualTo(MOCK_JTI);
         assertThat(JsonPath.compile("$.authorities[0]").<String>read(payload)).isEqualTo("admin");
         assertThat(JsonPath.compile("$.scopes[0]").<String>read(payload)).isEqualTo("all");
-        assertThat(JsonPath.compile("$.username").<String>read(payload)).isEqualTo("lisa su");
+        assertThat(JsonPath.compile("$.name").<String>read(payload)).isEqualTo("lisa su");
         assertThat(JsonPath.compile("$.protectedData").<String>read(payload)).isEqualTo("yyy");
         assertThat(split[2]).isEqualTo(MOCK_SIGNATURE);
     }

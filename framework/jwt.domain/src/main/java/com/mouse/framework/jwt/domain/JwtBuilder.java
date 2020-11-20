@@ -42,8 +42,8 @@ public class JwtBuilder<T> {
         return this;
     }
 
-    public JwtBuilder<T> username(String username) {
-        payload.put("username", username);
+    public JwtBuilder<T> name(String username) {
+        payload.put("name", username);
         return this;
     }
 

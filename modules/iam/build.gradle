@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementation project(':iam.gateways')
+    api project(':iam.gateways')
 
 
     implementation 'org.springframework.boot:spring-boot-starter'

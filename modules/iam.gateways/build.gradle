@@ -1,7 +1,7 @@
-
 apply from: "$rootDir/gradle/config/scripts/spring-boot.gradle"
 
 dependencies {
+    api project(":iam.application")
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     testImplementation "com.jayway.jsonpath:json-path"
