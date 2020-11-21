@@ -3,6 +3,7 @@ package com.mouse.users.iam.integration;
 import com.jayway.jsonpath.JsonPath;
 import com.mouse.framework.domain.core.Base64Util;
 import com.mouse.framework.jwt.domain.Verifier;
+import com.mouse.framework.test.EnableEmbeddedMongoDB;
 import com.mouse.users.iam.domain.PasswordEncoder;
 import com.mouse.users.iam.domain.User;
 import com.mouse.users.iam.domain.UserRepository;
@@ -25,6 +26,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Disabled
+@EnableEmbeddedMongoDB
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AllocationTokenTest {
     private @Resource TestRestTemplate testRestTemplate;

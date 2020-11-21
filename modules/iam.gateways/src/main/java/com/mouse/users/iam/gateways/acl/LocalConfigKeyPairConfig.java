@@ -2,6 +2,7 @@ package com.mouse.users.iam.gateways.acl;
 
 import com.mouse.framework.domain.core.Base64Util;
 import com.mouse.framework.jwt.domain.KeyPairConfig;
+import lombok.Setter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -13,8 +14,9 @@ import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+@Setter
 @Component
-@ConfigurationProperties(prefix = "iam.jwt")
+@ConfigurationProperties(prefix = "application.iam.jwt")
 public class LocalConfigKeyPairConfig implements KeyPairConfig, InitializingBean {
     private String publicKey;
     private String privateKey;
