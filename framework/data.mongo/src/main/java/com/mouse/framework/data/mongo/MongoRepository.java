@@ -1,5 +1,6 @@
 package com.mouse.framework.data.mongo;
 
+import com.mouse.framework.domain.core.AggregationNotFoundException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.Optional;

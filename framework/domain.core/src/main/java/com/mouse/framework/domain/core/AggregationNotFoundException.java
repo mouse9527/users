@@ -1,4 +1,4 @@
-package com.mouse.framework.data.mongo;
+package com.mouse.framework.domain.core;
 
 // TODO: move to domain.core
 public class AggregationNotFoundException extends RuntimeException {
