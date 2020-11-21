@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -64,6 +65,20 @@ class MongoRepositoryTest {
         assertThat(throwable).isNotNull();
         assertThat(throwable).isInstanceOf(AggregationNotFoundException.class);
         assertThat(throwable).hasMessage(String.format("Aggregation %s not found in collection %s", TestEntity.class.getName(), MongoTestEntityRepository.COLLECTION_NAME));
+    }
+
+    @Test
+    void should_be_able_to_load_optional() {
+        mongoTemplate.save(entity, MongoTestEntityRepository.COLLECTION_NAME);
+        Optional<TestEntity> optional = mongoTestEntityRepository.loadOptional(MOCK_ID);
+        assertThat(optional).hasValue(entity);
+    }
+
+    @Test
+    void should_be_able_to_load_empty_optional() {
+        Optional<TestEntity> empty = mongoTestEntityRepository.loadOptional(MOCK_ID);
+
+        assertThat(empty).isEmpty();
     }
 
     @Test
