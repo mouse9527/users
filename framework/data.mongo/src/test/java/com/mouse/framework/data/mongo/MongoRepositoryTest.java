@@ -1,5 +1,6 @@
 package com.mouse.framework.data.mongo;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -15,23 +16,42 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 @SpringBootTest
 @Import(MongoRepositoryTest.MongoTestEntityRepository.class)
 class MongoRepositoryTest {
+    public static final String MOCK_ID = "mock-id";
+    public static final String LISA_SU = "lisa su";
     private @Resource MongoTestEntityRepository mongoTestEntityRepository;
     private @Resource MongoTemplate mongoTemplate;
+    private TestEntity entity;
+
+    @BeforeEach
+    void setUp() {
+        entity = new TestEntity();
+        entity.id = MOCK_ID;
+        entity.name = LISA_SU;
+    }
 
     @Test
     void should_be_able_to_save_obj_into_mongo() {
-        TestEntity entity = new TestEntity();
-        entity.id = "mock-id";
-        entity.name = "lisa su";
-
         mongoTestEntityRepository.save(entity);
 
-        TestEntity fromMongo = mongoTemplate.findOne(query(where("id").is("mock-id")), TestEntity.class, MongoTestEntityRepository.COLLECTION_NAME);
+        TestEntity fromMongo = mongoTemplate.findOne(query(where("id").is(MOCK_ID)), TestEntity.class, MongoTestEntityRepository.COLLECTION_NAME);
 
+        assertEqual(fromMongo);
+    }
+
+    private void assertEqual(TestEntity fromMongo) {
         assertThat(fromMongo).isNotNull();
         assertThat(fromMongo == entity).isFalse();
-        assertThat(fromMongo.id).isEqualTo("mock-id");
-        assertThat(fromMongo.name).isEqualTo("lisa su");
+        assertThat(fromMongo.id).isEqualTo(MOCK_ID);
+        assertThat(fromMongo.name).isEqualTo(LISA_SU);
+    }
+
+    @Test
+    void should_be_able_to_load_entity_from_repository() {
+        mongoTemplate.save(entity, MongoTestEntityRepository.COLLECTION_NAME);
+
+        TestEntity fromMongo = mongoTestEntityRepository.load(MOCK_ID);
+
+        assertEqual(fromMongo);
     }
 
     static class TestEntity {
@@ -44,7 +64,7 @@ class MongoRepositoryTest {
         public static final String COLLECTION_NAME = "test-entities";
 
         public MongoTestEntityRepository(MongoTemplate mongoTemplate) {
-            super(mongoTemplate, COLLECTION_NAME);
+            super(mongoTemplate, TestEntity.class, COLLECTION_NAME);
         }
     }
 }
