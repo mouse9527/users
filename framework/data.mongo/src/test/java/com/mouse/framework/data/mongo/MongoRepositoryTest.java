@@ -58,6 +58,15 @@ class MongoRepositoryTest {
     }
 
     @Test
+    void should_be_able_to_raise_aggregation_not_found_exception_when_not_found() {
+        Throwable throwable = catchThrowable(() -> mongoTestEntityRepository.load("unknown"));
+
+        assertThat(throwable).isNotNull();
+        assertThat(throwable).isInstanceOf(AggregationNotFoundException.class);
+        assertThat(throwable).hasMessage(String.format("Aggregation %s not found in collection %s", TestEntity.class.getName(), MongoTestEntityRepository.COLLECTION_NAME));
+    }
+
+    @Test
     void should_be_able_to_list_entities_correctly() {
         mongoTemplate.save(entity, MongoTestEntityRepository.COLLECTION_NAME);
         TestEntity entity2 = new TestEntity("id-2", "mouse");
@@ -65,6 +74,7 @@ class MongoRepositoryTest {
 
         List<TestEntity> entities = mongoTestEntityRepository.listAll();
 
+        assertThat(entities).hasSize(2);
         assertThat(entities).containsSequence(entity, entity2);
     }
 
@@ -76,12 +86,17 @@ class MongoRepositoryTest {
     }
 
     @Test
-    void should_be_able_to_raise_aggregation_not_found_exception_when_not_found() {
-        Throwable throwable = catchThrowable(() -> mongoTestEntityRepository.load("unknown"));
+    void should_be_able_to_list_with_query() {
+        mongoTemplate.save(entity, MongoTestEntityRepository.COLLECTION_NAME);
+        mongoTemplate.save(new TestEntity("id-2", "mouse"), MongoTestEntityRepository.COLLECTION_NAME);
 
-        assertThat(throwable).isNotNull();
-        assertThat(throwable).isInstanceOf(AggregationNotFoundException.class);
-        assertThat(throwable).hasMessage(String.format("Aggregation %s not found in collection %s", TestEntity.class.getName(), MongoTestEntityRepository.COLLECTION_NAME));
+        List<TestEntity> entities = mongoTestEntityRepository.list(query(where("name").is(LISA_SU)));
+
+        assertThat(entities).containsOnly(entity);
+
+        List<TestEntity> empty = mongoTestEntityRepository.list(query(where("name").is("unknown")));
+
+        assertThat(empty).isEmpty();
     }
 
     @EqualsAndHashCode

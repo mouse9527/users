@@ -2,6 +2,7 @@ package com.mouse.framework.data.mongo;
 
 import com.mouse.framework.domain.core.AggregationNotFoundException;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,6 +35,10 @@ public abstract class MongoRepository<T, ID> {
 
     public List<T> listAll() {
         return mongoTemplate.findAll(entityClass, collectionName);
+    }
+
+    public List<T> list(Query query) {
+        return mongoTemplate.find(query, entityClass, collectionName);
     }
 }
 
