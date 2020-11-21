@@ -50,6 +50,20 @@ class MongoRepositoryTest {
     }
 
     @Test
+    void should_be_able_to_update_entity_when_it_exists() {
+        mongoTemplate.save(entity);
+
+        String modifiedName = "modified-name";
+        entity.name = modifiedName;
+        mongoTestEntityRepository.save(entity);
+
+        TestEntity fromMongo = mongoTemplate.findOne(query(where("_id").is(MOCK_ID)), TestEntity.class, MongoTestEntityRepository.COLLECTION_NAME);
+        assertThat(fromMongo).isNotNull();
+        assertThat(fromMongo.id).isEqualTo(MOCK_ID);
+        assertThat(fromMongo.name).isEqualTo(modifiedName);
+    }
+
+    @Test
     void should_be_able_to_load_entity_from_repository() {
         mongoTemplate.save(entity, MongoTestEntityRepository.COLLECTION_NAME);
 
@@ -114,6 +128,7 @@ class MongoRepositoryTest {
         assertThat(empty).isEmpty();
     }
 
+    @SuppressWarnings("FieldMayBeFinal")
     @EqualsAndHashCode
     static class TestEntity {
         private String id;
