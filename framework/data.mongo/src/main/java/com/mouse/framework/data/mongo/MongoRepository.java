@@ -2,6 +2,8 @@ package com.mouse.framework.data.mongo;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.util.Optional;
+
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -21,6 +23,10 @@ public abstract class MongoRepository<T, ID> {
     }
 
     public T load(ID id) {
-        return mongoTemplate.findOne(query(where("_id").is(id)), entityClass, collectionName);
+        return loadOptional(id).orElseThrow(() -> new AggregationNotFoundException(entityClass.getName(), collectionName));
+    }
+
+    public Optional<T> loadOptional(ID id) {
+        return Optional.ofNullable(mongoTemplate.findOne(query(where("_id").is(id)), entityClass, collectionName));
     }
 }

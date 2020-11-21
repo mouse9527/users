@@ -1,5 +1,6 @@
 package com.mouse.framework.data.mongo;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
@@ -27,6 +29,11 @@ class MongoRepositoryTest {
         entity = new TestEntity();
         entity.id = MOCK_ID;
         entity.name = LISA_SU;
+    }
+
+    @AfterEach
+    void tearDown() {
+        mongoTemplate.dropCollection(MongoTestEntityRepository.COLLECTION_NAME);
     }
 
     @Test
@@ -52,6 +59,15 @@ class MongoRepositoryTest {
         TestEntity fromMongo = mongoTestEntityRepository.load(MOCK_ID);
 
         assertEqual(fromMongo);
+    }
+
+    @Test
+    void should_be_able_to_raise_aggregation_not_found_exception_when_not_found() {
+        Throwable throwable = catchThrowable(() -> mongoTestEntityRepository.load("unknown"));
+
+        assertThat(throwable).isNotNull();
+        assertThat(throwable).isInstanceOf(AggregationNotFoundException.class);
+        assertThat(throwable).hasMessage(String.format("Aggregation %s not found in collection %s", TestEntity.class.getName(), MongoTestEntityRepository.COLLECTION_NAME));
     }
 
     static class TestEntity {
