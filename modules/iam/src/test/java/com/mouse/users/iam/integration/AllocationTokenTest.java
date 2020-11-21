@@ -9,6 +9,7 @@ import com.mouse.users.iam.domain.User;
 import com.mouse.users.iam.domain.UserRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpMethod;
@@ -31,8 +32,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AllocationTokenTest {
     private @Resource TestRestTemplate testRestTemplate;
     private @Resource Verifier verifier;
-    private @Resource UserRepository userRepository;
-    private @Resource PasswordEncoder passwordEncoder;
+    private @Autowired UserRepository userRepository;
+    private @Autowired PasswordEncoder passwordEncoder;
 
     @Test
     void should_be_able_to_allocation_token() {
