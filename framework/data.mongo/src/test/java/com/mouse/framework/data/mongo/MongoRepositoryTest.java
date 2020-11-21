@@ -69,6 +69,13 @@ class MongoRepositoryTest {
     }
 
     @Test
+    void should_be_able_to_list_empty_when_not_found() {
+        List<TestEntity> entities = mongoTestEntityRepository.listAll();
+
+        assertThat(entities).isEmpty();
+    }
+
+    @Test
     void should_be_able_to_raise_aggregation_not_found_exception_when_not_found() {
         Throwable throwable = catchThrowable(() -> mongoTestEntityRepository.load("unknown"));
 
