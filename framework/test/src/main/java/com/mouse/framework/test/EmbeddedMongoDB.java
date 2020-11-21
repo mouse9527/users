@@ -4,7 +4,7 @@ import com.github.silaev.mongodb.replicaset.MongoDbReplicaSet;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 
-/**
+/*
  * Open a replica set mongodb in docker
  *
  * <b>Must call {@link EmbeddedMongoDB#stop()} when the end of use</b>
