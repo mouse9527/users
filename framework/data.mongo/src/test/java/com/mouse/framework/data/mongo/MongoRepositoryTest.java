@@ -1,8 +1,7 @@
 package com.mouse.framework.data.mongo;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,14 +12,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
-@DataMongoTest
+@SpringBootTest
 @Import(MongoRepositoryTest.MongoTestEntityRepository.class)
 class MongoRepositoryTest {
     private @Resource MongoTestEntityRepository mongoTestEntityRepository;
     private @Resource MongoTemplate mongoTemplate;
 
     @Test
-    @Disabled
     void should_be_able_to_save_obj_into_mongo() {
         TestEntity entity = new TestEntity();
         entity.id = "mock-id";
@@ -28,7 +26,7 @@ class MongoRepositoryTest {
 
         mongoTestEntityRepository.save(entity);
 
-        TestEntity fromMongo = mongoTemplate.findOne(query(where("id").is("mock-id")), TestEntity.class);
+        TestEntity fromMongo = mongoTemplate.findOne(query(where("id").is("mock-id")), TestEntity.class, MongoTestEntityRepository.COLLECTION_NAME);
 
         assertThat(fromMongo).isNotNull();
         assertThat(fromMongo == entity).isFalse();
@@ -43,5 +41,10 @@ class MongoRepositoryTest {
 
     @Repository
     static class MongoTestEntityRepository extends MongoRepository<TestEntity, String> {
+        public static final String COLLECTION_NAME = "test-entities";
+
+        public MongoTestEntityRepository(MongoTemplate mongoTemplate) {
+            super(mongoTemplate, COLLECTION_NAME);
+        }
     }
 }
