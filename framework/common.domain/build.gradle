@@ -1,7 +1,0 @@
-dependencies {
-    implementation "com.fasterxml.jackson.core:jackson-databind"
-}
-
-jar {
-    enabled = true
-}

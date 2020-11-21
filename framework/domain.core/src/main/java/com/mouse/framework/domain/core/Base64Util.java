@@ -1,4 +1,4 @@
-package com.mouse.framework.common.domain;
+package com.mouse.framework.domain.core;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

@@ -1,6 +1,7 @@
 package com.mouse.framework.jwt.domain;
 
-import com.mouse.framework.common.domain.Base64Util;
+
+import com.mouse.framework.domain.core.Base64Util;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

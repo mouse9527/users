@@ -1,7 +1,7 @@
 package com.mouse.framework.jwt.domain;
 
 import com.jayway.jsonpath.JsonPath;
-import com.mouse.framework.common.domain.Base64Util;
+import com.mouse.framework.domain.core.Base64Util;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;

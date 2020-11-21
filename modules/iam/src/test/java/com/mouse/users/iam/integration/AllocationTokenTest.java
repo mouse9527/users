@@ -1,7 +1,7 @@
 package com.mouse.users.iam.integration;
 
 import com.jayway.jsonpath.JsonPath;
-import com.mouse.framework.common.domain.Base64Util;
+import com.mouse.framework.domain.core.Base64Util;
 import com.mouse.framework.jwt.domain.Verifier;
 import com.mouse.users.iam.domain.PasswordEncoder;
 import com.mouse.users.iam.domain.User;

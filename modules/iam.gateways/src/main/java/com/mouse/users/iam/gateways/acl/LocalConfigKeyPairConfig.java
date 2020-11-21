@@ -1,6 +1,6 @@
 package com.mouse.users.iam.gateways.acl;
 
-import com.mouse.framework.common.domain.Base64Util;
+import com.mouse.framework.domain.core.Base64Util;
 import com.mouse.framework.jwt.domain.KeyPairConfig;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;

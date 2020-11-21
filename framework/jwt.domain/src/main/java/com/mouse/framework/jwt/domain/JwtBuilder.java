@@ -2,7 +2,7 @@ package com.mouse.framework.jwt.domain;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mouse.framework.common.domain.Base64Util;
+import com.mouse.framework.domain.core.Base64Util;
 
 import java.util.HashMap;
 import java.util.List;
