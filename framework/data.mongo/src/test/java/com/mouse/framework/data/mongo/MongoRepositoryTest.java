@@ -1,8 +1,9 @@
 package com.mouse.framework.data.mongo;
 
 import com.mouse.framework.domain.core.AggregationNotFoundException;
+import com.mouse.framework.test.EnableEmbeddedMongoDB;
+import lombok.EqualsAndHashCode;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -17,20 +19,14 @@ import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
 @SpringBootTest
+@EnableEmbeddedMongoDB
 @Import(MongoRepositoryTest.MongoTestEntityRepository.class)
 class MongoRepositoryTest {
     public static final String MOCK_ID = "mock-id";
     public static final String LISA_SU = "lisa su";
+    private final TestEntity entity = new TestEntity(MOCK_ID, LISA_SU);
     private @Resource MongoTestEntityRepository mongoTestEntityRepository;
     private @Resource MongoTemplate mongoTemplate;
-    private TestEntity entity;
-
-    @BeforeEach
-    void setUp() {
-        entity = new TestEntity();
-        entity.id = MOCK_ID;
-        entity.name = LISA_SU;
-    }
 
     @AfterEach
     void tearDown() {
@@ -49,8 +45,7 @@ class MongoRepositoryTest {
     private void assertEqual(TestEntity fromMongo) {
         assertThat(fromMongo).isNotNull();
         assertThat(fromMongo == entity).isFalse();
-        assertThat(fromMongo.id).isEqualTo(MOCK_ID);
-        assertThat(fromMongo.name).isEqualTo(LISA_SU);
+        assertThat(fromMongo).isEqualTo(entity);
     }
 
     @Test
@@ -63,6 +58,17 @@ class MongoRepositoryTest {
     }
 
     @Test
+    void should_be_able_to_list_entities_correctly() {
+        mongoTemplate.save(entity, MongoTestEntityRepository.COLLECTION_NAME);
+        TestEntity entity2 = new TestEntity("id-2", "mouse");
+        mongoTemplate.save(entity2, MongoTestEntityRepository.COLLECTION_NAME);
+
+        List<TestEntity> entities = mongoTestEntityRepository.listAll();
+
+        assertThat(entities).containsSequence(entity, entity2);
+    }
+
+    @Test
     void should_be_able_to_raise_aggregation_not_found_exception_when_not_found() {
         Throwable throwable = catchThrowable(() -> mongoTestEntityRepository.load("unknown"));
 
@@ -71,9 +77,15 @@ class MongoRepositoryTest {
         assertThat(throwable).hasMessage(String.format("Aggregation %s not found in collection %s", TestEntity.class.getName(), MongoTestEntityRepository.COLLECTION_NAME));
     }
 
+    @EqualsAndHashCode
     static class TestEntity {
         private String id;
         private String name;
+
+        public TestEntity(String id, String name) {
+            this.id = id;
+            this.name = name;
+        }
     }
 
     @Repository

@@ -3,6 +3,7 @@ package com.mouse.framework.data.mongo;
 import com.mouse.framework.domain.core.AggregationNotFoundException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -30,4 +31,9 @@ public abstract class MongoRepository<T, ID> {
     public Optional<T> loadOptional(ID id) {
         return Optional.ofNullable(mongoTemplate.findOne(query(where("_id").is(id)), entityClass, collectionName));
     }
+
+    public List<T> listAll() {
+        return mongoTemplate.findAll(entityClass, collectionName);
+    }
 }
+
