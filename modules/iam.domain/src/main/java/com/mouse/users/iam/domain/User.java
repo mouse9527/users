@@ -15,7 +15,7 @@ public class User {
     }
 
     public boolean matchPassword(String rawPassword, PasswordMatcher passwordMatcher) {
-        return passwordMatcher.match(rawPassword, password);
+        return passwordMatcher.matches(rawPassword, password);
     }
 
     public String getId() {

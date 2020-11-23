@@ -2,9 +2,10 @@ apply from: "$rootDir/gradle/config/scripts/spring-boot.gradle"
 
 dependencies {
     api project(":iam.application")
-
     implementation project(":data.mongo")
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.security:spring-security-crypto'
 
     testImplementation "com.jayway.jsonpath:json-path"
 }

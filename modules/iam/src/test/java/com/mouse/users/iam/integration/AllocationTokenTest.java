@@ -26,7 +26,6 @@ import java.util.Map;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Disabled
 @EnableEmbeddedMongoDB
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AllocationTokenTest {
@@ -36,6 +35,7 @@ public class AllocationTokenTest {
     private @Autowired PasswordEncoder passwordEncoder;
 
     @Test
+    @Disabled
     void should_be_able_to_allocation_token() {
         User user = new User("mock-user-id", "admin", "管理员", passwordEncoder.encode("xxx"));
         userRepository.save(user);
@@ -59,7 +59,6 @@ public class AllocationTokenTest {
         assertThat(JsonPath.compile("$.name").<String>read(accessTokenPayload)).isEqualTo("管理员");
         assertThat(JsonPath.compile("$.jti").<String>read(accessTokenPayload)).hasSize(32);
         assertThat(JsonPath.compile("$.authorities[0]").<String>read(accessTokenPayload)).isEqualTo("view-users");
-        assertThat(JsonPath.compile("$.scopes[0]").<String>read(accessTokenPayload)).isEqualTo("all");
         String protectedData = JsonPath.compile("$.protectedData").read(accessTokenPayload);
         assertThat(JsonPath.compile("$.userId").<String>read(verifier.decrypt(protectedData))).isEqualTo("mock-user-id");
 

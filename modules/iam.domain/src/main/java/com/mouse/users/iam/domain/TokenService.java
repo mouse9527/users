@@ -5,7 +5,6 @@ import com.mouse.framework.jwt.domain.Signer;
 
 import java.time.Instant;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -21,14 +20,14 @@ public class TokenService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    public TokenResult allocate(User user, List<String> authorities, Instant iat) {
+    public TokenResult allocate(User user, AuthoritiesSet authoritiesSet, Instant iat) {
         String accessTokenId = nextId();
         Instant accessTokenExp = iat.plus(ACCESS_TOKEN_EXP_DAYS, DAYS);
         String accessToken = new JwtBuilder()
                 .jti(accessTokenId)
                 .iat(iat.getEpochSecond())
                 .exp(accessTokenExp.getEpochSecond())
-                .authorities(authorities)
+                .authorities(authoritiesSet.getAuthorities())
                 .name(user.getName())
                 .protectedData(Collections.singletonMap("userId", user.getId()))
                 .sign(signer);

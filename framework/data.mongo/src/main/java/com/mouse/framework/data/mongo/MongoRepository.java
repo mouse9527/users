@@ -33,6 +33,10 @@ public abstract class MongoRepository<T, ID> {
         return Optional.ofNullable(mongoTemplate.findOne(query(where("_id").is(id)), entityClass, collectionName));
     }
 
+    public Optional<T> findOptional(Query query) {
+        return Optional.ofNullable(mongoTemplate.findOne(query, entityClass, collectionName));
+    }
+
     public List<T> listAll() {
         return mongoTemplate.findAll(entityClass, collectionName);
     }

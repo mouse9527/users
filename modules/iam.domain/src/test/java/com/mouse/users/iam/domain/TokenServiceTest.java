@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.internal.verification.Times;
 
 import java.time.Instant;
-import java.util.Collections;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +26,7 @@ class TokenServiceTest {
 
         User user = new User("mock-user-id", "admin", "管理员", "xxx");
 
-        TokenResult tokenResult = tokenService.allocate(user, Collections.singletonList("mock-authority"), now);
+        TokenResult tokenResult = tokenService.allocate(user, new AuthoritiesSet("mock-authority"), now);
 
         String accessToken = tokenResult.getAccessToken();
         assertThat(accessToken).isNotEmpty();

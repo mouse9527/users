@@ -25,20 +25,21 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 class MongoRepositoryTest {
     public static final String MOCK_ID = "mock-id";
     public static final String LISA_SU = "lisa su";
+    public static final String COLLECTION_NAME = "test-entities";
     private final TestEntity entity = new TestEntity(MOCK_ID, LISA_SU);
     private @Resource MongoTestEntityRepository mongoTestEntityRepository;
     private @Resource MongoTemplate mongoTemplate;
 
     @AfterEach
     void tearDown() {
-        mongoTemplate.dropCollection(MongoTestEntityRepository.COLLECTION_NAME);
+        mongoTemplate.dropCollection(COLLECTION_NAME);
     }
 
     @Test
     void should_be_able_to_save_obj_into_mongo() {
         mongoTestEntityRepository.save(entity);
 
-        TestEntity fromMongo = mongoTemplate.findOne(query(where("id").is(MOCK_ID)), TestEntity.class, MongoTestEntityRepository.COLLECTION_NAME);
+        TestEntity fromMongo = mongoTemplate.findOne(query(where("id").is(MOCK_ID)), TestEntity.class, COLLECTION_NAME);
 
         assertEqual(fromMongo);
     }
@@ -57,7 +58,7 @@ class MongoRepositoryTest {
         entity.name = modifiedName;
         mongoTestEntityRepository.save(entity);
 
-        TestEntity fromMongo = mongoTemplate.findOne(query(where("_id").is(MOCK_ID)), TestEntity.class, MongoTestEntityRepository.COLLECTION_NAME);
+        TestEntity fromMongo = mongoTemplate.findOne(query(where("_id").is(MOCK_ID)), TestEntity.class, COLLECTION_NAME);
         assertThat(fromMongo).isNotNull();
         assertThat(fromMongo.id).isEqualTo(MOCK_ID);
         assertThat(fromMongo.name).isEqualTo(modifiedName);
@@ -65,7 +66,7 @@ class MongoRepositoryTest {
 
     @Test
     void should_be_able_to_load_entity_from_repository() {
-        mongoTemplate.save(entity, MongoTestEntityRepository.COLLECTION_NAME);
+        mongoTemplate.save(entity, COLLECTION_NAME);
 
         TestEntity fromMongo = mongoTestEntityRepository.load(MOCK_ID);
 
@@ -78,12 +79,12 @@ class MongoRepositoryTest {
 
         assertThat(throwable).isNotNull();
         assertThat(throwable).isInstanceOf(AggregationNotFoundException.class);
-        assertThat(throwable).hasMessage(String.format("Aggregation %s not found in collection %s", TestEntity.class.getName(), MongoTestEntityRepository.COLLECTION_NAME));
+        assertThat(throwable).hasMessage(String.format("Aggregation %s not found in collection %s", TestEntity.class.getName(), COLLECTION_NAME));
     }
 
     @Test
     void should_be_able_to_load_optional() {
-        mongoTemplate.save(entity, MongoTestEntityRepository.COLLECTION_NAME);
+        mongoTemplate.save(entity, COLLECTION_NAME);
         Optional<TestEntity> optional = mongoTestEntityRepository.loadOptional(MOCK_ID);
         assertThat(optional).hasValue(entity);
     }
@@ -97,9 +98,9 @@ class MongoRepositoryTest {
 
     @Test
     void should_be_able_to_list_entities_correctly() {
-        mongoTemplate.save(entity, MongoTestEntityRepository.COLLECTION_NAME);
+        mongoTemplate.save(entity, COLLECTION_NAME);
         TestEntity entity2 = new TestEntity("id-2", "mouse");
-        mongoTemplate.save(entity2, MongoTestEntityRepository.COLLECTION_NAME);
+        mongoTemplate.save(entity2, COLLECTION_NAME);
 
         List<TestEntity> entities = mongoTestEntityRepository.listAll();
 
@@ -116,8 +117,8 @@ class MongoRepositoryTest {
 
     @Test
     void should_be_able_to_list_with_query() {
-        mongoTemplate.save(entity, MongoTestEntityRepository.COLLECTION_NAME);
-        mongoTemplate.save(new TestEntity("id-2", "mouse"), MongoTestEntityRepository.COLLECTION_NAME);
+        mongoTemplate.save(entity, COLLECTION_NAME);
+        mongoTemplate.save(new TestEntity("id-2", "mouse"), COLLECTION_NAME);
 
         List<TestEntity> entities = mongoTestEntityRepository.list(query(where("name").is(LISA_SU)));
 
@@ -126,6 +127,15 @@ class MongoRepositoryTest {
         List<TestEntity> empty = mongoTestEntityRepository.list(query(where("name").is("unknown")));
 
         assertThat(empty).isEmpty();
+    }
+
+    @Test
+    void should_be_able_to_query_Optional() {
+        mongoTemplate.save(entity, COLLECTION_NAME);
+        mongoTemplate.save(new TestEntity("id-2", "mouse"), COLLECTION_NAME);
+
+        assertThat(mongoTestEntityRepository.findOptional(query(where("name").is("lisa su")))).hasValue(entity);
+        assertThat(mongoTestEntityRepository.findOptional(query(where("name").is("unknown")))).isEmpty();
     }
 
     @SuppressWarnings("FieldMayBeFinal")
@@ -142,7 +152,6 @@ class MongoRepositoryTest {
 
     @Repository
     static class MongoTestEntityRepository extends MongoRepository<TestEntity, String> {
-        public static final String COLLECTION_NAME = "test-entities";
 
         public MongoTestEntityRepository(MongoTemplate mongoTemplate) {
             super(mongoTemplate, TestEntity.class, COLLECTION_NAME);

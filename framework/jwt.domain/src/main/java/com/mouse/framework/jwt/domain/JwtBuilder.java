@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.framework.domain.core.Base64Util;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class JwtBuilder {
         return this;
     }
 
-    public JwtBuilder authorities(List<String> authorities) {
+    public JwtBuilder authorities(Collection<String> authorities) {
         payload.put(AUTHORITIES, authorities);
         return this;
     }
