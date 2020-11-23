@@ -5,6 +5,7 @@ import com.mouse.framework.jwt.domain.Verifier;
 import com.mouse.framework.test.EnableEmbeddedMongoDB;
 import com.mouse.framework.test.JsonObject;
 import com.mouse.users.iam.domain.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,15 +38,16 @@ public class AllocationTokenTest {
     private @Autowired PasswordEncoder passwordEncoder;
     private @Resource MongoTemplate mongoTemplate;
 
+    @AfterEach
+    void tearDown() {
+        mongoTemplate.dropCollection(UserRepository.COLLECTION_NAME);
+        mongoTemplate.dropCollection(PrincipalRepository.COLLECTION_NAME);
+        mongoTemplate.dropCollection(RoleRepository.COLLECTION_NAME);
+    }
+
     @Test
     void should_be_able_to_allocation_token() {
-        User user = new User(MOCK_USER_ID, "admin", "管理员", passwordEncoder.encode("xxx"));
-        userRepository.save(user);
-        Principal principal = new Principal(MOCK_USER_ID, Set.of(MOCK_ROLE_ID));
-        mongoTemplate.save(principal, PrincipalRepository.COLLECTION_NAME);
-        Role role = new Role(MOCK_ROLE_ID, "mock-role", new AuthoritiesSet(MOCK_AUTHORITIES));
-        mongoTemplate.save(role, RoleRepository.COLLECTION_NAME);
-
+        mockData();
         Map<String, String> body = new HashMap<>();
         body.put("username", "admin");
         body.put("password", "xxx");
@@ -81,5 +83,14 @@ public class AllocationTokenTest {
         assertThat(refreshJwtPayload.strVal("$.jti")).hasSize(32);
         assertThat(refreshJwtPayload.strVal("$.authorities[0]")).isEqualTo("refresh-token");
         assertThat(refreshJwtPayload.has("$.protectedData")).isFalse();
+    }
+
+    private void mockData() {
+        User user = new User(MOCK_USER_ID, "admin", "管理员", passwordEncoder.encode("xxx"));
+        userRepository.save(user);
+        Principal principal = new Principal(MOCK_USER_ID, Set.of(MOCK_ROLE_ID));
+        mongoTemplate.save(principal, PrincipalRepository.COLLECTION_NAME);
+        Role role = new Role(MOCK_ROLE_ID, "mock-role", new AuthoritiesSet(MOCK_AUTHORITIES));
+        mongoTemplate.save(role, RoleRepository.COLLECTION_NAME);
     }
 }
