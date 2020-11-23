@@ -1,8 +1,5 @@
 dependencies {
     api project(":domain.core")
     implementation "com.fasterxml.jackson.core:jackson-databind"
-}
-
-jar {
-    enabled = true
+    testImplementation project(":test")
 }

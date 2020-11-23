@@ -53,7 +53,9 @@ public class JwtBuilder<T> {
     }
 
     public String sign(Signer signer) {
-        payload.replace("protectedData", signer.encrypt(payload.get("protectedData").toString()));
+        if (payload.containsKey("protectedData")) {
+            payload.replace("protectedData", signer.encrypt(payload.get("protectedData").toString()));
+        }
         Header header = signer.defaultHeader();
         StringBuilder builder = new StringBuilder();
         builder.append(Base64Util.encodeToString(format(header))).append(".");
