@@ -1,5 +1,6 @@
 package com.mouse.framework.jwt.domain;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.mouse.framework.domain.core.Base64Util;
 import com.mouse.framework.test.JsonObject;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.Collections;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,7 +35,7 @@ public class JwtBuilderTest {
         Instant iat = Instant.now();
         Instant exp = Instant.now();
 
-        String jwt = new JwtBuilder<String>()
+        String jwt = new JwtBuilder()
                 .iat(iat.getEpochSecond())
                 .exp(exp.getEpochSecond())
                 .jti(MOCK_JTI)
@@ -63,7 +65,7 @@ public class JwtBuilderTest {
     void should_be_able_to_sign_jwt_without_protected_data() {
         long iat = Instant.now().getEpochSecond();
         long exp = Instant.now().getEpochSecond();
-        String jwt = new JwtBuilder<Void>()
+        String jwt = new JwtBuilder()
                 .iat(iat)
                 .exp(exp)
                 .jti(MOCK_JTI)
@@ -81,5 +83,19 @@ public class JwtBuilderTest {
         assertThat(payload.has("$.name")).isFalse();
         assertThat(payload.has("$.scopes")).isFalse();
         assertThat(jwt.split("\\.")[2]).isEqualTo(MOCK_SIGNATURE);
+    }
+
+    @Test
+    void should_be_able_to_sign_protected_date_with_object() throws Exception {
+        Map<String, String> data = Collections.singletonMap("id", "mock-id");
+        String jsonData = new ObjectMapper().writeValueAsString(data);
+        given(signer.encrypt(jsonData)).willReturn(jsonData);
+
+        String jwt = new JwtBuilder()
+                .protectedData(data)
+                .sign(signer);
+
+        JsonObject payload = new JsonObject(Base64Util.decodeToString(jwt.split("\\.")[1]));
+        assertThat(new JsonObject(payload.strVal("$.protectedData")).strVal("$.id")).isEqualTo("mock-id");
     }
 }

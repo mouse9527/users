@@ -6,7 +6,6 @@ import com.mouse.framework.jwt.domain.Signer;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -21,14 +20,14 @@ public class TokenService {
     }
 
     public TokenResult allocate(String userId, List<String> authorities, Instant iat) {
-        String accessToken = new JwtBuilder<Map<String, String>>()
+        String accessToken = new JwtBuilder()
                 .jti(UUID.randomUUID().toString().replaceAll("-", ""))
                 .iat(iat.getEpochSecond())
                 .exp(iat.plus(ACCESS_TOKEN_EXP_DAYS, DAYS).getEpochSecond())
                 .authorities(authorities)
                 .protectedData(Collections.singletonMap("userId", userId))
                 .sign(signer);
-        String refreshToken = new JwtBuilder<Void>()
+        String refreshToken = new JwtBuilder()
                 .jti(UUID.randomUUID().toString().replaceAll("-", ""))
                 .iat(iat.getEpochSecond())
                 .exp(iat.plus(REFRESH_TOKEN_EXP_DAYS, DAYS).getEpochSecond())
