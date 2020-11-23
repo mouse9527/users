@@ -12,7 +12,7 @@ class UserTest {
         PasswordMatcher passwordMatcher = mock(PasswordMatcher.class);
         given(passwordMatcher.match("password", "encoded-password")).willReturn(true);
 
-        User user = new User("admin", "管理员", "encoded-password");
+        User user = new User("mock-user-id", "admin", "管理员", "encoded-password");
 
         assertThat(user.matchPassword("password", passwordMatcher)).isTrue();
     }

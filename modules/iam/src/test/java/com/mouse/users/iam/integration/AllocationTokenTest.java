@@ -37,7 +37,7 @@ public class AllocationTokenTest {
 
     @Test
     void should_be_able_to_allocation_token() {
-        User user = new User("admin", "管理员", passwordEncoder.encode("xxx"));
+        User user = new User("mock-user-id", "admin", "管理员", passwordEncoder.encode("xxx"));
         userRepository.save(user);
         Map<String, String> body = new HashMap<>();
         body.put("username", "admin");
