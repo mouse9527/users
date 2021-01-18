@@ -1,6 +1,6 @@
 package com.mouse.users.iam.integration;
 
-import com.mouse.framework.domain.core.Base64Util;
+import com.mouse.uses.domain.core.Base64Util;
 import com.mouse.framework.jwt.domain.Verifier;
 import com.mouse.framework.test.EnableEmbeddedMongoDB;
 import com.mouse.framework.test.JsonObject;

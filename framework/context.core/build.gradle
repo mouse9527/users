@@ -1,7 +1,0 @@
-dependencies {
-    api project(":jwt.domain")
-}
-
-jar {
-    enabled = true
-}

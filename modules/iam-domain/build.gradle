@@ -1,0 +1,5 @@
+dependencies {
+    api project(":jwt-domain")
+
+    testImplementation "com.mouse.framework:test:$frameworkVersion"
+}

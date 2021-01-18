@@ -1,4 +1,0 @@
-dependencies {
-    api project(":jwt.domain")
-    testImplementation project(":test")
-}

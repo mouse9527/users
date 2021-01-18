@@ -1,4 +1,0 @@
-dependencies {
-    api project(":iam.domain")
-    implementation "org.springframework:spring-context"
-}

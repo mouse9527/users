@@ -1,12 +1,6 @@
 rootProject.name = 'users'
 
-
 file("modules").eachDir {
-    include it.name
-    project(":${it.name}").projectDir = it
-}
-
-file("framework").eachDir {
     include it.name
     project(":${it.name}").projectDir = it
 }

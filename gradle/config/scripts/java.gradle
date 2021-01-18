@@ -4,6 +4,9 @@ sourceCompatibility = 14
 targetCompatibility = 14
 
 repositories {
+    maven {
+        url "https://nexus.mouse.center:1443/repository/maven-public/"
+    }
     jcenter()
     mavenCentral()
 }

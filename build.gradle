@@ -1,7 +1,7 @@
 apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
 apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"
 
-allprojects {
+subprojects {
     apply plugin:  'idea'
     if (subprojects.size() > 0 && name != rootProject.name) return
     if (name == "documents" || projectDir.parentFile.name == "frontends") return

@@ -1,5 +1,0 @@
-dependencies {
-    api project(":domain.core")
-    implementation "com.fasterxml.jackson.core:jackson-databind"
-    testImplementation project(":test")
-}

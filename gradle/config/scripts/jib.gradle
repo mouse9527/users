@@ -13,7 +13,7 @@ apply plugin: com.google.cloud.tools.jib.gradle.JibPlugin
 
 jib {
     from {
-        image = 'openjdk:15'
+        image = 'openjdk:14'
     }
     to {
         image = "$project.name:latest"

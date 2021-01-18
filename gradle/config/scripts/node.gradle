@@ -15,7 +15,6 @@ npmInstall {
     args = ['--registry=https://registry.npm.taobao.org']
 }
 
-
 task npmRunTest(type: NpmTask, group: 'verification') {
     args = ['run', 'test']
 }
