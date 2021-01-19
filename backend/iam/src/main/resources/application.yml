@@ -1,0 +1,5 @@
+application:
+  iam:
+    jwt:
+      private-key: classpath:privatekey.pem
+      public-key: classpath:publickey.pem
