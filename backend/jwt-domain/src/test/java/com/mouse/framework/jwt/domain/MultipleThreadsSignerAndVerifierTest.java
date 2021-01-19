@@ -46,13 +46,11 @@ class MultipleThreadsSignerAndVerifierTest {
 
         List<Boolean> verifies = Collections.synchronizedList(new ArrayList<>());
         CountDownLatch verifyingCountDownLatch = new CountDownLatch(COUNT);
-        signatures.forEach((data, signature) -> {
-            new Thread(() -> {
-                boolean verify = verifier.verify(signature, data);
-                verifies.add(verify);
-                verifyingCountDownLatch.countDown();
-            }).start();
-        });
+        signatures.forEach((data, signature) -> new Thread(() -> {
+            boolean verify = verifier.verify(signature, data);
+            verifies.add(verify);
+            verifyingCountDownLatch.countDown();
+        }).start());
         verifyingCountDownLatch.await();
 
         assertThat(verifies).hasSize(COUNT);
@@ -76,13 +74,11 @@ class MultipleThreadsSignerAndVerifierTest {
 
         CountDownLatch decryptCountDown = new CountDownLatch(COUNT);
         Map<String, String> decryptedData = new ConcurrentHashMap<>();
-        encryptData.forEach((data, encrypted) -> {
-            new Thread(() -> {
-                String decrypted = verifier.decrypt(encrypted);
-                decryptedData.put(data, decrypted);
-                decryptCountDown.countDown();
-            }).start();
-        });
+        encryptData.forEach((data, encrypted) -> new Thread(() -> {
+            String decrypted = verifier.decrypt(encrypted);
+            decryptedData.put(data, decrypted);
+            decryptCountDown.countDown();
+        }).start());
         decryptCountDown.await();
 
         assertThat(decryptedData).hasSize(COUNT);

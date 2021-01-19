@@ -4,8 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IAM {
+public class IamApplication {
     public static void main(String[] args) {
-        SpringApplication.run(IAM.class);
+        SpringApplication.run(IamApplication.class);
     }
 }

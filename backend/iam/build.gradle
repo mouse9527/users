@@ -1,6 +1,5 @@
-plugins {
-    id 'application'
-}
+apply plugin: 'application'
+apply from: "$rootDir/gradle/config/scripts/jib.gradle"
 
 dependencies {
     api project(':iam-gateways')
@@ -14,5 +13,5 @@ dependencies {
 }
 
 application {
-    mainClassName = 'com.mouse.users.iam.IAM'
+    mainClassName = 'com.mouse.users.iam.IamApplication'
 }

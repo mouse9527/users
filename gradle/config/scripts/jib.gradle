@@ -13,10 +13,10 @@ apply plugin: com.google.cloud.tools.jib.gradle.JibPlugin
 
 jib {
     from {
-        image = 'openjdk:14'
+        image = "$imagePrefix/openjdk:14"
     }
     to {
-        image = "$project.name:latest"
+        image = "$imagePrefix/$rootProject.name/$project.name:latest"
     }
     allowInsecureRegistries = true
 }
