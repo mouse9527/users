@@ -5,58 +5,56 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.uses.domain.core.Base64Util;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class JwtBuilder {
-    public static final String PROTECTED_DATA = "protectedData";
-    public static final String NAME = "name";
-    public static final String SCOPES = "scopes";
-    public static final String AUTHORITIES = "authorities";
-    public static final String JTI = "jti";
-    public static final String EXP = "exp";
-    public static final String IAT = "iat";
-    private final Map<String, Object> payload;
     private final ObjectMapper mapper;
+    private Long iat;
+    private Long exp;
+    private String jti;
+    private Collection<String> authorities;
+    private Collection<String> scopes;
+    private String name;
+    private Object protectedData;
+    private String encrypt;
 
     public JwtBuilder() {
-        payload = new HashMap<>();
         mapper = new ObjectMapper();
     }
 
     public JwtBuilder iat(Long iat) {
-        payload.put(IAT, iat);
+        this.iat = iat;
         return this;
     }
 
     public JwtBuilder exp(Long exp) {
-        payload.put(EXP, exp);
+        this.exp = exp;
         return this;
     }
 
     public JwtBuilder jti(String jti) {
-        payload.put(JTI, jti);
+        this.jti = jti;
         return this;
     }
 
     public JwtBuilder authorities(Collection<String> authorities) {
-        payload.put(AUTHORITIES, authorities);
+        this.authorities = authorities;
         return this;
     }
 
     public JwtBuilder scopes(List<String> scopes) {
-        payload.put(SCOPES, scopes);
+        this.scopes = scopes;
         return this;
     }
 
     public JwtBuilder name(String username) {
-        payload.put(NAME, username);
+        this.name = username;
         return this;
     }
 
     public JwtBuilder protectedData(Object protectedData) {
-        payload.put(PROTECTED_DATA, protectedData);
+        this.protectedData = protectedData;
         return this;
     }
 
@@ -67,7 +65,7 @@ public class JwtBuilder {
         Header header = signer.defaultHeader();
         StringBuilder builder = new StringBuilder();
         builder.append(Base64Util.encodeToString(format(header))).append(".");
-        builder.append(Base64Util.encodeToString(format(payload)));
+        builder.append(Base64Util.encodeToString(format(getPayload())));
 
         String signatureData = builder.toString();
 
@@ -75,19 +73,30 @@ public class JwtBuilder {
         return builder.toString();
     }
 
+    private Payload getPayload() {
+        return new Payload(
+                iat,
+                exp,
+                jti,
+                authorities,
+                scopes,
+                name,
+                encrypt
+        );
+    }
+
     private void encryptData(Signer signer) {
-        Object protectedData = payload.get(PROTECTED_DATA);
         String data;
         if (protectedData instanceof String) {
             data = (String) protectedData;
         } else {
             data = formatAsString(protectedData);
         }
-        payload.replace(PROTECTED_DATA, signer.encrypt(data));
+        encrypt = signer.encrypt(data);
     }
 
     private boolean hasProtectedData() {
-        return payload.containsKey(PROTECTED_DATA);
+        return Objects.nonNull(protectedData);
     }
 
     private String formatAsString(Object data) {
