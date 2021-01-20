@@ -33,26 +33,13 @@ allprojects {
         all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
         all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
-
-    test.dependsOn(checkstyleMain)
 }
 
 dependencies {
     implementation project(":iam-gateways")
-    implementation "com.google.guava:guava:$guavaVersion"
-    implementation "org.apache.commons:commons-lang3"
-    implementation "org.apache.logging.log4j:log4j-core"
-    implementation "org.apache.logging.log4j:log4j-slf4j-impl"
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-
-
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation "com.mouse.framework:test:$frameworkVersion"
-    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
-    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
-    testImplementation "com.jayway.jsonpath:json-path"
 }
 
 subprojects {

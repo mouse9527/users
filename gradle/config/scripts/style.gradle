@@ -23,3 +23,4 @@ checkstyleMain.doFirst {
         checkstyleMain.exclude "${'**/' + it.replaceAll('\\.', '/') + '.java'}"
     }
 }
+test.dependsOn(checkstyleMain)
