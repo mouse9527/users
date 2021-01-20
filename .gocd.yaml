@@ -30,3 +30,4 @@ pipelines:
                     command: gradle
                     arguments:
                       - publish
+                      - push
