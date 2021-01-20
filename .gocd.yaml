@@ -9,6 +9,7 @@ pipelines:
     materials:
       users-git:
         git: git@scm.mouse.center:mouse/users.git
+        auto_update: false
       framework-upstream:
         pipeline: framework
         stage: build
