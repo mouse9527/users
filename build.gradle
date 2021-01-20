@@ -14,7 +14,6 @@ allprojects {
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
     apply from: "$rootDir/gradle/config/scripts/style.gradle"
-    apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
 
     dependencies {
         implementation "com.google.guava:guava:$guavaVersion"
@@ -58,10 +57,11 @@ dependencies {
 
 subprojects {
     apply plugin: 'java-library'
+    apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
 
     jar {
         enabled = true
     }
 }
-
 apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"
+coverage.excludes= ["com.mouse.users.UsersApplication.*"]

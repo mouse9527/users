@@ -1,0 +1,31 @@
+format_version: 10
+environments:
+  k8s:
+    pipelines:
+      - users
+pipelines:
+  users:
+    group: mouse
+    materials:
+      users-git:
+        git: git@scm.mouse.center:mouse/users.git
+      framework-upstream:
+        pipeline: framework
+        stage: build
+    stages:
+      - build:
+          jobs:
+            test-and-build:
+              elastic_profile_id: k8s
+              tasks:
+                - exec:
+                    command: gradle
+                    arguments:
+                      - clean
+                      - build
+                      - test
+                      - --fail-fast
+                - exec:
+                    command: gradle
+                    arguments:
+                      - publish
