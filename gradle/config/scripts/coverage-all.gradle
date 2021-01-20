@@ -1,5 +1,5 @@
 class CoverageExtension {
-    @SuppressWarnings("unused") excludes = []
+    List<String> excludes = []
 }
 
 apply plugin: 'java'
