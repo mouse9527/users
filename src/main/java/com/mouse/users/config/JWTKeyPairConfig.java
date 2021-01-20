@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
 
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 @Configuration
@@ -19,7 +17,7 @@ public class JWTKeyPairConfig {
     private String publicKey;
 
     @Bean
-    public KeyPairConfig keyPairConfig() throws FileNotFoundException, URISyntaxException {
+    public KeyPairConfig keyPairConfig() throws Exception {
         return new FileKeyPairConfig(Path.of(ResourceUtils.getURL(privateKey).toURI()), Path.of(ResourceUtils.getURL(publicKey).toURI()));
     }
 }

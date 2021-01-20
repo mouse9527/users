@@ -52,8 +52,7 @@ void setJacocoTaskOptions(JacocoReportBase jacocoTask) {
     jacocoTask.sourceSets getMainSourceSets(allprojects.findAll { isJacocoProject(it) })
     jacocoTask.executionData.from(files("${buildDir}/jacoco/jacocoMerge.exec"))
     afterEvaluate {
-        jacocoTask.clas
-        sDirectories.setFrom(files(jacocoTask.classDirectories.files.collect {
+        jacocoTask.classDirectories.setFrom(files(jacocoTask.classDirectories.files.collect {
             fileTree(dir: it, excludes: coverage.excludes)
         }))
     }
