@@ -1,6 +1,6 @@
 rootProject.name = 'users'
 
-file("backend").eachDir {
+file("modules").eachDir {
     include it.name
     project(":${it.name}").projectDir = it
 }

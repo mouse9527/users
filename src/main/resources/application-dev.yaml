@@ -1,0 +1,10 @@
+application:
+  iam:
+    jwt:
+      private-key: classpath:privatekey.pem
+      public-key: classpath:publickey.pem
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: users

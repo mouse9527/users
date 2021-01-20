@@ -1,19 +1,20 @@
-apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
-apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"
+plugins {
+    id 'application'
+}
 
-subprojects {
-    apply plugin:  'idea'
-    if (subprojects.size() > 0 && name != rootProject.name) return
-    if (name == "documents" || projectDir.parentFile.name == "frontends") return
+application {
+    mainClassName = "com.mouse.users.UsersApplication"
+}
 
+allprojects {
     version '1.0.0'
 
-    apply plugin: 'java-library'
+    apply from: "$rootDir/gradle/config/scripts/spring-boot.gradle"
+    apply from: "$rootDir/gradle/config/scripts/jib.gradle"
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
     apply from: "$rootDir/gradle/config/scripts/style.gradle"
     apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
-    apply from: "$rootDir/gradle/config/scripts/spring-boot.gradle"
 
     dependencies {
         implementation "com.google.guava:guava:$guavaVersion"
@@ -23,19 +24,44 @@ subprojects {
 
         compileOnly "org.projectlombok:lombok:$lombokVersion"
         annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
         testCompileOnly "org.projectlombok:lombok:$lombokVersion"
         testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
         testImplementation "com.jayway.jsonpath:json-path"
     }
 
-    jar {
-        enabled = true
-    }
-
-    test.dependsOn(checkstyleMain)
-
     configurations {
         all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
         all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
     }
+
+    test.dependsOn(checkstyleMain)
 }
+
+dependencies {
+    implementation project(":iam-gateways")
+    implementation "com.google.guava:guava:$guavaVersion"
+    implementation "org.apache.commons:commons-lang3"
+    implementation "org.apache.logging.log4j:log4j-core"
+    implementation "org.apache.logging.log4j:log4j-slf4j-impl"
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "com.mouse.framework:test:$frameworkVersion"
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    testImplementation "com.jayway.jsonpath:json-path"
+}
+
+subprojects {
+    apply plugin: 'java-library'
+
+    jar {
+        enabled = true
+    }
+}
+
+apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"
