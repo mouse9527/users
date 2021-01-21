@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -37,5 +38,14 @@ class LoginServiceTest {
         TokenResult tokenResult = loginService.allocate("admin", "123456", ACTION);
 
         assertThat(tokenResult).isEqualTo(expectedTokenResult);
+    }
+
+    @Test
+    void should_be_able_to_raise_exception_when_user_not_found() {
+        Throwable throwable = catchThrowable(() -> loginService.allocate("unknown-user", "xxx", ACTION));
+
+        assertThat(throwable).isNotNull();
+        assertThat(throwable).isInstanceOf(UserNamePasswordErrorException.class);
+        assertThat(throwable).hasMessage("error.username-password-error");
     }
 }

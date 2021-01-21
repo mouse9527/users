@@ -21,7 +21,7 @@ public class LoginService {
 
     public TokenResult allocate(String username, String password, Instant action) {
         Optional<User> optional = repository.loadByUsername(username);
-        User user = optional.get();
+        User user = optional.orElseThrow(() -> new UserNamePasswordErrorException("error.username-password-error"));
         if (user.matchPassword(password, passwordMatcher)) {
             return tokenService.allocate(user, roleService.loadAuthorities(user.getId()), action);
         }
