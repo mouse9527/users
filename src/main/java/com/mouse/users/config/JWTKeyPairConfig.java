@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
 
-import java.nio.file.Path;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Configuration
 public class JWTKeyPairConfig {
@@ -17,7 +18,12 @@ public class JWTKeyPairConfig {
     private String publicKey;
 
     @Bean
-    public KeyPairConfig keyPairConfig() throws Exception {
-        return new FileKeyPairConfig(Path.of(ResourceUtils.getURL(privateKey).toURI()), Path.of(ResourceUtils.getURL(publicKey).toURI()));
+    public KeyPairConfig keyPairConfig() throws IOException {
+        try (
+                InputStream privateKey = ResourceUtils.getURL(this.privateKey).openStream();
+                InputStream publicKey = ResourceUtils.getURL(this.publicKey).openStream()
+        ) {
+            return new FileKeyPairConfig(privateKey, publicKey);
+        }
     }
 }

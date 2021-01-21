@@ -1,5 +1,6 @@
 plugins {
     id 'application'
+    id 'org.springframework.boot' version "$springBootVersion"
 }
 
 application {
@@ -9,13 +10,13 @@ application {
 allprojects {
     version '1.0.0'
 
-    apply from: "$rootDir/gradle/config/scripts/spring-boot.gradle"
     apply from: "$rootDir/gradle/config/scripts/jib.gradle"
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
-    apply from: "$rootDir/gradle/config/scripts/style.gradle"
+    apply from: "$rootDir/gradle/config/scripts/junit.gradle"
 
     dependencies {
+        implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
         implementation "com.google.guava:guava:$guavaVersion"
         implementation "org.apache.commons:commons-lang3"
         implementation "org.apache.logging.log4j:log4j-core"
@@ -54,8 +55,3 @@ subprojects {
     }
 }
 apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"
-coverage.excludes = [
-        "com/mouse/users/UsersApplication.class",
-        "com/mouse/users/jwt/domain/RSASigner#encrypt",
-        "com/mouse/users/jwt/domain/RSASigner#sign"
-]

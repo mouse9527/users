@@ -2,7 +2,7 @@ package com.mouse.users.jwt.domain;
 
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
+import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,8 +11,8 @@ class FileKeyPairConfigTest {
     @SuppressWarnings("ConstantConditions")
     @Test
     void should_be_able_to_create_key_from_file() throws Exception {
-        Path privateKey = Path.of(this.getClass().getClassLoader().getResource("privatekey.pem").getPath());
-        Path publicKey = Path.of(this.getClass().getClassLoader().getResource("publickey.pem").getPath());
+        InputStream privateKey = this.getClass().getClassLoader().getResource("privatekey.pem").openStream();
+        InputStream publicKey = this.getClass().getClassLoader().getResource("publickey.pem").openStream();
 
         KeyPairConfig keyPairConfig = new FileKeyPairConfig(privateKey, publicKey);
 

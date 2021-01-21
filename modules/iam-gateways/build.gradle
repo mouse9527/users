@@ -1,5 +1,3 @@
-apply from: "$rootDir/gradle/config/scripts/spring-boot.gradle"
-
 dependencies {
     api project(":iam-application")
     api "com.mouse.framework:data-mongo:$frameworkVersion"
