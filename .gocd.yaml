@@ -29,5 +29,4 @@ pipelines:
                 - exec:
                     command: gradle
                     arguments:
-                      - publish
                       - push
