@@ -2,6 +2,7 @@ package com.mouse.users.iam.domain;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class LoginService {
     private final PasswordMatcher passwordMatcher;
@@ -21,11 +22,9 @@ public class LoginService {
 
     public TokenResult allocate(String username, String password, Instant action) {
         Optional<User> optional = repository.loadByUsername(username);
-        User user = optional.orElseThrow(() -> new UserNamePasswordErrorException("error.username-password-error"));
-        if (user.matchPassword(password, passwordMatcher)) {
-            return tokenService.allocate(user, roleService.loadAuthorities(user.getId()), action);
-        }
-
-        return null;
+        Supplier<UserNamePasswordErrorException> exceptionSupplier = () -> new UserNamePasswordErrorException("error.username-password-error");
+        User user = optional.orElseThrow(exceptionSupplier);
+        if (!user.matchPassword(password, passwordMatcher)) throw exceptionSupplier.get();
+        return tokenService.allocate(user, roleService.loadAuthorities(user.getId()), action);
     }
 }

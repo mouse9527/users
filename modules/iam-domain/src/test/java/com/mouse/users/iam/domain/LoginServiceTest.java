@@ -48,4 +48,13 @@ class LoginServiceTest {
         assertThat(throwable).isInstanceOf(UserNamePasswordErrorException.class);
         assertThat(throwable).hasMessage("error.username-password-error");
     }
+
+    @Test
+    void should_be_able_to_raise_exception_when_password_not_match() {
+        Throwable throwable = catchThrowable(() -> loginService.allocate("admin", "unknown-password", ACTION));
+
+        assertThat(throwable).isNotNull();
+        assertThat(throwable).isInstanceOf(UserNamePasswordErrorException.class);
+        assertThat(throwable).hasMessage("error.username-password-error");
+    }
 }
