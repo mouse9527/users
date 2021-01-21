@@ -12,7 +12,7 @@ allprojects {
 
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
-    apply from: "$rootDir/gradle/config/scripts/junit.gradle"
+    apply from: "$rootDir/gradle/config/scripts/style.gradle"
 
     dependencies {
         implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
