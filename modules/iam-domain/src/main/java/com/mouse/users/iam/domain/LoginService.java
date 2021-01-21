@@ -22,9 +22,11 @@ public class LoginService {
 
     public TokenResult allocate(String username, String password, Instant action) {
         Optional<User> optional = repository.loadByUsername(username);
+
         Supplier<UserNamePasswordErrorException> exceptionSupplier = () -> new UserNamePasswordErrorException("error.username-password-error");
         User user = optional.orElseThrow(exceptionSupplier);
         if (!user.matchPassword(password, passwordMatcher)) throw exceptionSupplier.get();
+
         return tokenService.allocate(user, roleService.loadAuthorities(user.getId()), action);
     }
 }
