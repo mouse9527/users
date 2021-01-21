@@ -2,27 +2,25 @@ package com.mouse.users.jwt.domain;
 
 
 import com.mouse.uses.domain.core.Base64Util;
+import lombok.Generated;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import java.nio.charset.StandardCharsets;
-import java.security.*;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
 
 public class RSAVerifier implements Verifier {
     private final Signature verifier;
     private final Cipher cipher;
 
-    public RSAVerifier(PublicKey publicKey) {
-        try {
-            verifier = Signature.getInstance("SHA1WithRSA");
-            verifier.initVerify(publicKey);
-            cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.DECRYPT_MODE, publicKey);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException e) {
-            throw new RuntimeException(e);
-        }
+    public RSAVerifier(PublicKey publicKey) throws Exception {
+        verifier = Signature.getInstance("SHA1WithRSA");
+        verifier.initVerify(publicKey);
+        cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, publicKey);
     }
 
     @Override
@@ -30,6 +28,7 @@ public class RSAVerifier implements Verifier {
         return verify(Base64Util.decode(signature), data.getBytes(StandardCharsets.UTF_8));
     }
 
+    @Generated
     private synchronized boolean verify(byte[] signature, byte[] data) {
         try {
             verifier.update(data);
@@ -45,6 +44,7 @@ public class RSAVerifier implements Verifier {
         return new String(decrypt(bytes));
     }
 
+    @Generated
     private synchronized byte[] decrypt(byte[] bytes) {
         try {
             return cipher.doFinal(bytes);

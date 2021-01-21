@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Configuration;
 public class JwtConfig {
 
     @Bean
-    public Verifier verifier(KeyPairConfig keyPairConfig) {
+    public Verifier verifier(KeyPairConfig keyPairConfig) throws Exception {
         return new RSAVerifier(keyPairConfig.getPublicKey());
     }
 
     @Bean
-    public Signer signer(KeyPairConfig keyPairConfig) {
+    public Signer signer(KeyPairConfig keyPairConfig) throws Exception {
         return new RSASigner(keyPairConfig.getPrivateKey());
     }
 }

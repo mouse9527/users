@@ -3,6 +3,7 @@ package com.mouse.users.jwt.domain;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mouse.uses.domain.core.Base64Util;
+import lombok.Generated;
 
 import java.util.Collection;
 import java.util.List;
@@ -99,6 +100,7 @@ public class JwtBuilder {
         return Objects.nonNull(protectedData);
     }
 
+    @Generated
     private String formatAsString(Object data) {
         try {
             return mapper.writeValueAsString(data);
@@ -107,6 +109,7 @@ public class JwtBuilder {
         }
     }
 
+    @Generated
     private byte[] format(Object data) {
         try {
             return mapper.writeValueAsBytes(data);

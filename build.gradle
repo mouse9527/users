@@ -54,4 +54,8 @@ subprojects {
     }
 }
 apply from: "$rootDir/gradle/config/scripts/coverage-all.gradle"
-coverage.excludes = ["com.mouse.users.UsersApplication"]
+coverage.excludes = [
+        "com/mouse/users/UsersApplication.class",
+        "com/mouse/users/jwt/domain/RSASigner#encrypt",
+        "com/mouse/users/jwt/domain/RSASigner#sign"
+]

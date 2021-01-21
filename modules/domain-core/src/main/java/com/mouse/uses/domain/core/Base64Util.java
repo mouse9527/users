@@ -3,7 +3,11 @@ package com.mouse.uses.domain.core;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-public class Base64Util {
+public final class Base64Util {
+
+    private Base64Util() {
+    }
+
     public static String encodeToString(byte[] bytes) {
         return Base64.getEncoder().encodeToString(bytes);
     }
