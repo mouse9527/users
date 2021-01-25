@@ -1,3 +1,5 @@
 spring:
+  application:
+    name: users
   profiles:
     active: dev

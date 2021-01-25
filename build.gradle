@@ -8,7 +8,8 @@ application {
 }
 
 allprojects {
-    version '1.0.0'
+    version '0.0.1-SNAPSHOT'
+    group 'com.mouse'
 
     apply from: "$rootDir/gradle/config/scripts/java.gradle"
     apply from: "$rootDir/gradle/config/scripts/junit.gradle"
@@ -37,9 +38,11 @@ allprojects {
 
 dependencies {
     implementation project(":iam-gateways")
+    implementation platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "com.mouse.framework:test:$frameworkVersion"
@@ -48,7 +51,6 @@ dependencies {
 subprojects {
     apply plugin: 'java-library'
     apply from: "$rootDir/gradle/config/scripts/coverage.gradle"
-
     jar {
         enabled = true
     }
