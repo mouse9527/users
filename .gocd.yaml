@@ -30,3 +30,15 @@ pipelines:
                     command: gradle
                     arguments:
                       - push
+            deploy:
+              elastic_profile_id: kubectl
+              task:
+                - exec:
+                    command: kubectl
+                    arguments:
+                      - rollout
+                      - restart
+                      - statefulset
+                      - "-n"
+                      - app
+                      - users
