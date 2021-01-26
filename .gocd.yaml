@@ -2,7 +2,8 @@ format_version: 10
 environments:
   k8s:
     pipelines:
-      - users
+      - users-build
+      - users-deploy-test
 pipelines:
   users-build:
     group: mouse
