@@ -1,7 +1,7 @@
 package com.mouse.users.iam.test;
 
 import com.mouse.framework.test.EnableEmbeddedMongoDB;
-import com.mouse.framework.test.JsonObject;
+import com.mouse.framework.test.TestJsonObject;
 import com.mouse.users.iam.domain.*;
 import com.mouse.users.jwt.domain.Verifier;
 import com.mouse.uses.domain.core.Base64Util;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 
 import javax.annotation.Resource;
 import java.net.URI;
@@ -26,7 +25,6 @@ import java.util.Set;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("test")
 @EnableEmbeddedMongoDB
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AllocationTokenTest {
@@ -64,10 +62,10 @@ public class AllocationTokenTest {
         JsonResponse response = new JsonResponse(responseEntity);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        String accessToken = response.strValue("$.accessToken");
+        String accessToken = response.strVal("$.accessToken");
         assertThat(accessToken).isNotEmpty();
         assertThat(accessToken.split("\\.")).hasSize(3);
-        JsonObject accessTokenPayload = new JsonObject(Base64Util.decodeToString(accessToken.split("\\.")[1]));
+        TestJsonObject accessTokenPayload = new TestJsonObject(Base64Util.decodeToString(accessToken.split("\\.")[1]));
         Instant iat = Instant.ofEpochSecond(accessTokenPayload.intVal("$.iat"));
         assertThat(iat).isBefore(Instant.now());
         Instant exp = Instant.ofEpochSecond(accessTokenPayload.intVal("$.exp"));
@@ -76,12 +74,12 @@ public class AllocationTokenTest {
         assertThat(accessTokenPayload.strVal("$.jti")).hasSize(32);
         assertThat(accessTokenPayload.strVal("$.authorities[0]")).isEqualTo(MOCK_AUTHORITIES);
         String protectedData = accessTokenPayload.strVal("$.protectedData");
-        assertThat(new JsonObject(verifier.decrypt(protectedData)).strVal("$.userId")).isEqualTo(MOCK_USER_ID);
+        assertThat(new TestJsonObject(verifier.decrypt(protectedData)).strVal("$.userId")).isEqualTo(MOCK_USER_ID);
 
-        String refreshToken = response.strValue("$.refreshToken");
+        String refreshToken = response.strVal("$.refreshToken");
         assertThat(refreshToken).isNotEmpty();
         assertThat(refreshToken.split("\\.")).hasSize(3);
-        JsonObject refreshJwtPayload = new JsonObject(Base64Util.decodeToString(refreshToken.split("\\.")[1]));
+        TestJsonObject refreshJwtPayload = new TestJsonObject(Base64Util.decodeToString(refreshToken.split("\\.")[1]));
         Instant refreshTokenIat = Instant.ofEpochSecond(refreshJwtPayload.intVal("$.iat"));
         assertThat(refreshTokenIat).isBetween(start, Instant.now());
         Instant refreshTokenExp = Instant.ofEpochSecond(refreshJwtPayload.intVal("$.exp"));

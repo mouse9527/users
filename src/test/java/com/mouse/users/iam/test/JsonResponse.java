@@ -1,21 +1,18 @@
 package com.mouse.users.iam.test;
 
-import com.jayway.jsonpath.JsonPath;
+import com.mouse.framework.test.TestJsonObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class JsonResponse {
+public class JsonResponse extends TestJsonObject {
     private final ResponseEntity<String> response;
 
     public JsonResponse(ResponseEntity<String> response) {
+        super(response.getBody());
         this.response = response;
     }
 
     public HttpStatus getStatusCode() {
         return response.getStatusCode();
-    }
-
-    public String strValue(String jsonPath) {
-        return JsonPath.compile(jsonPath).read(response.getBody());
     }
 }

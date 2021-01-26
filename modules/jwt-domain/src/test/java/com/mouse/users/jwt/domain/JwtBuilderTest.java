@@ -3,7 +3,7 @@ package com.mouse.users.jwt.domain;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import com.mouse.uses.domain.core.Base64Util;
-import com.mouse.framework.test.JsonObject;
+import com.mouse.framework.test.TestJsonObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -72,10 +72,10 @@ public class JwtBuilderTest {
                 .authorities(Collections.singletonList("admin"))
                 .sign(signer);
 
-        JsonObject header = new JsonObject(Base64Util.decodeToString(jwt.split("\\.")[0]));
+        TestJsonObject header = new TestJsonObject(Base64Util.decodeToString(jwt.split("\\.")[0]));
         assertThat(header.strVal("$.alg")).isEqualTo("RSA1024");
         assertThat(header.strVal("$.typ")).isEqualTo("JWT");
-        JsonObject payload = new JsonObject(Base64Util.decodeToString(jwt.split("\\.")[1]));
+        TestJsonObject payload = new TestJsonObject(Base64Util.decodeToString(jwt.split("\\.")[1]));
         assertThat(payload.intVal("$.iat")).isEqualTo(iat);
         assertThat(payload.intVal("$.exp")).isEqualTo(exp);
         assertThat(payload.strVal("$.authorities[0]")).isEqualTo("admin");
@@ -95,7 +95,7 @@ public class JwtBuilderTest {
                 .protectedData(data)
                 .sign(signer);
 
-        JsonObject payload = new JsonObject(Base64Util.decodeToString(jwt.split("\\.")[1]));
-        assertThat(new JsonObject(payload.strVal("$.protectedData")).strVal("$.id")).isEqualTo("mock-id");
+        TestJsonObject payload = new TestJsonObject(Base64Util.decodeToString(jwt.split("\\.")[1]));
+        assertThat(new TestJsonObject(payload.strVal("$.protectedData")).strVal("$.id")).isEqualTo("mock-id");
     }
 }

@@ -1,8 +1,8 @@
 package com.mouse.users.iam.domain;
 
+import com.mouse.framework.test.TestJsonObject;
 import com.mouse.users.jwt.domain.Header;
 import com.mouse.users.jwt.domain.Signer;
-import com.mouse.framework.test.JsonObject;
 import com.mouse.uses.domain.core.Base64Util;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.verification.Times;
@@ -31,7 +31,7 @@ class TokenServiceTest {
         String accessToken = tokenResult.getAccessToken();
         assertThat(accessToken).isNotEmpty();
         assertThat(accessToken.split("\\.")).hasSize(3);
-        JsonObject accessTokenPayload = new JsonObject(Base64Util.decodeToString(accessToken.split("\\.")[1]));
+        TestJsonObject accessTokenPayload = new TestJsonObject(Base64Util.decodeToString(accessToken.split("\\.")[1]));
         String accessTokenId = accessTokenPayload.strVal("$.jti");
         assertThat(accessTokenId).hasSize(32);
         assertThat(accessTokenPayload.intVal("$.iat")).isEqualTo(now.getEpochSecond());
@@ -43,7 +43,7 @@ class TokenServiceTest {
         assertThat(accessTokenPayload.strVal("$.name")).isEqualTo("管理员");
         String refreshToken = tokenResult.getRefreshToken();
         assertThat(refreshToken).isNotEmpty();
-        JsonObject refreshTokenPayload = new JsonObject(Base64Util.decodeToString(refreshToken.split("\\.")[1]));
+        TestJsonObject  refreshTokenPayload = new TestJsonObject(Base64Util.decodeToString(refreshToken.split("\\.")[1]));
         String refreshTokenId = refreshTokenPayload.strVal("$.jti");
         assertThat(refreshTokenId).hasSize(32);
         assertThat(refreshTokenPayload.intVal("$.iat")).isEqualTo(now.getEpochSecond());
