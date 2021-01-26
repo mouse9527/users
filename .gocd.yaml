@@ -4,14 +4,14 @@ environments:
     pipelines:
       - users
 pipelines:
-  users:
+  users-build:
     group: mouse
     materials:
       users-git:
         git: git@scm.mouse.center:mouse/users.git
         auto_update: true
-      framework-upstream:
-        pipeline: framework
+      framework-build-upstream:
+        pipeline: framework-build
         stage: build
     stages:
       - build:
@@ -30,6 +30,15 @@ pipelines:
                     command: gradle
                     arguments:
                       - push
+  users-deploy-test:
+    group: mouse
+    materials:
+      users-build-upstream:
+        pipeline: users-build
+        stage: build
+    stages:
+      - deploy:
+          jobs:
             deploy:
               elastic_profile_id: kubectl
               tasks:
