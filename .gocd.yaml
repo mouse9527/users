@@ -6,7 +6,7 @@ environments:
       - users-deploy-test
 pipelines:
   users-build:
-    group: mouse
+    group: build
     materials:
       users-git:
         git: git@scm.mouse.center:mouse/users.git
@@ -30,7 +30,7 @@ pipelines:
                     arguments:
                       - push
   users-deploy-test:
-    group: mouse
+    group: deploy
     materials:
       users-build-upstream:
         pipeline: users-build
