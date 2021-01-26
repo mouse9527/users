@@ -10,8 +10,8 @@ pipelines:
       users-git:
         git: git@scm.mouse.center:mouse/users.git
         auto_update: true
-      framework-build-upstream:
-        pipeline: framework-build
+      framework-upstream:
+        pipeline: framework
         stage: build
     stages:
       - build:
