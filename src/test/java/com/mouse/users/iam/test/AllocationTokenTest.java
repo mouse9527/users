@@ -3,7 +3,6 @@ package com.mouse.users.iam.test;
 import com.mouse.framework.test.EnableEmbeddedMongoDB;
 import com.mouse.framework.test.TestClient;
 import com.mouse.framework.test.TestJsonObject;
-import com.mouse.framework.test.TestResponse;
 import com.mouse.users.iam.domain.*;
 import com.mouse.users.jwt.domain.Verifier;
 import com.mouse.uses.domain.core.Base64Util;
@@ -11,6 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import javax.annotation.Resource;
 import java.time.Instant;
@@ -51,10 +51,11 @@ public class AllocationTokenTest {
         body.put("password", "xxx");
         Instant start = Instant.ofEpochSecond(Instant.now().getEpochSecond());
 
-        TestResponse response = testClient.post("/auth/tokens", body);
+        ResponseEntity<TestJsonObject> response = testClient.post("/auth/tokens", body);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         TestJsonObject responseBody = response.getBody();
+        assertThat(responseBody).isNotNull();
         String accessToken = responseBody.strVal("$.accessToken");
         assertThat(accessToken).isNotEmpty();
         assertThat(accessToken.split("\\.")).hasSize(3);
