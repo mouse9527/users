@@ -1,4 +1,4 @@
-package com.mouse.users.config;
+package com.mouse.users;
 
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -19,12 +19,12 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(Throwable.class)
     public Object handle(Throwable throwable, HttpServletRequest request, HttpServletResponse response) {
-        int statusCode = messageTranslator.getStatusCode(throwable);
-        response.setStatus(statusCode);
+        MessageTranslator.Message message = messageTranslator.translate(throwable, request.getLocale());
+        response.setStatus(message.getStatus());
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("timestamp", Instant.now());
-        result.put("message", messageTranslator.translate(throwable));
-        result.put("status", statusCode);
+        result.put("message", message.getMessage());
+        result.put("status", message.getStatus());
         result.put("path", request.getRequestURI());
         return result;
     }
