@@ -3,3 +3,6 @@ application:
     jwt:
       private-key: classpath:privatekey.pem
       public-key: classpath:publickey.pem
+  test:
+    embedded-mongo:
+      image: mongo:4.4.3
