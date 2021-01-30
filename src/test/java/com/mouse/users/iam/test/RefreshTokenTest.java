@@ -1,6 +1,5 @@
 package com.mouse.users.iam.test;
 
-import com.mouse.framework.test.EnableEmbeddedMongoDB;
 import com.mouse.framework.test.TestClient;
 import com.mouse.framework.test.TestJsonObject;
 import com.mouse.users.iam.domain.*;
@@ -20,7 +19,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
-@EnableEmbeddedMongoDB
 class RefreshTokenTest {
     public static final String ADMIN = "admin";
     public static final String XXX = "xxx";

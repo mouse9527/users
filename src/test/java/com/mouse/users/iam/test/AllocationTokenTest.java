@@ -1,6 +1,5 @@
 package com.mouse.users.iam.test;
 
-import com.mouse.framework.test.EnableEmbeddedMongoDB;
 import com.mouse.framework.test.TestClient;
 import com.mouse.framework.test.TestJsonObject;
 import com.mouse.users.iam.domain.*;
@@ -22,7 +21,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
-@EnableEmbeddedMongoDB
 public class AllocationTokenTest {
     private static final String MOCK_USER_ID = "mock-user-id";
     private static final String MOCK_ROLE_ID = "mock-role-id";
